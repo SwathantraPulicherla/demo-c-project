@@ -18,7 +18,7 @@ jobs:
     - name: Checkout AI tools
       uses: actions/checkout@v4
       with:
-        repository: SwathantraPulicherla/ai-c-test-generator
+        repository: SwathantraPulicherla/ai-test-runner
         path: ai-tools
         token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -32,9 +32,9 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y cmake build-essential lcov
 
-    - name: Install AI test runner dependencies
+    - name: Install AI test runner
       run: |
-        cd ai-tools/ai-test-runner
+        cd ai-tools
         pip install -e .
 
     - name: Run AI tests
@@ -42,7 +42,7 @@ jobs:
       continue-on-error: true
       run: |
         cd target-repo
-        python -m ai_test_runner.cli --verbose
+        ai-test-runner --verbose
 
     - name: Generate test summary
       id: test-summary
