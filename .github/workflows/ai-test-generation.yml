@@ -73,7 +73,7 @@ jobs:
         git push
 
     - name: Comment on issue
-      if: steps.verify-changed-files.outputs.changes == 'true'
+      if: steps.verify-changed-files.outputs.changes == 'true' && github.event_name == 'issues'
       uses: actions/github-script@v7
       with:
         script: |
