@@ -26,7 +26,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.8'
+        python-version: '3.9'
 
     - name: Upgrade pip and setuptools
       run: |
@@ -35,8 +35,9 @@ jobs:
     - name: Install AI test generator
       run: |
         cd ai-tools
-        pip install --upgrade --force-reinstall google-generativeai>=0.8.0
+        pip install --upgrade --force-reinstall google-generativeai>=0.8.0 python-dotenv
         pip install --pre -e .
+        python3 -c "import google.generativeai as genai; print('Installed version:', genai.__version__); print('Has GenerativeModel:', hasattr(genai, 'GenerativeModel'))"
 
     - name: Generate AI tests
       env:
