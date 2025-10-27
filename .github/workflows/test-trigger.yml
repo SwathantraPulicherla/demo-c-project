@@ -3,10 +3,11 @@ name: Test Issue Trigger
 on:
   issues:
     types: [opened, labeled, edited]
+  workflow_dispatch:  # Manual trigger for testing
 
 jobs:
   test-trigger:
-    if: contains(github.event.issue.labels.*.name, 'ai-test-gen')
+    if: contains(github.event.issue.labels.*.name, 'ai-test-gen') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
