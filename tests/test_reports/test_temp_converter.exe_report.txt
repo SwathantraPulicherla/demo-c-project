@@ -1,0 +1,39 @@
+============================================================
+TEST REPORT: test_temp_converter.exe
+============================================================
+
+EXECUTION SUMMARY
+--------------------
+Test Executable: test_temp_converter.exe
+Exit Code: 0
+Overall Status: PASSED
+Individual Tests Run: 18
+Individual Tests Passed: 18
+Individual Tests Failed: 0
+
+DETAILED OUTPUT
+--------------------
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:152:test_raw_to_celsius_min_value:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:153:test_raw_to_celsius_max_value:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:154:test_raw_to_celsius_mid_value:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:155:test_raw_to_celsius_zero_raw:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:156:test_raw_to_celsius_specific_value:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:157:test_celsius_to_fahrenheit_freezing_point:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:158:test_celsius_to_fahrenheit_boiling_point:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:159:test_celsius_to_fahrenheit_negative_celsius:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:160:test_celsius_to_fahrenheit_room_temp:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:161:test_celsius_to_fahrenheit_absolute_zero:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:162:test_is_temperature_rising_true:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:163:test_is_temperature_rising_false_below_threshold:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:164:test_is_temperature_rising_false_equal_to_threshold:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:165:test_is_temperature_rising_false_decreasing:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:166:test_is_temperature_rising_false_equal:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:167:test_is_temperature_rising_zero_threshold:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:168:test_is_temperature_rising_negative_threshold_rising:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_converter.c:169:test_is_temperature_rising_negative_threshold_falling:PASS
+
+-----------------------
+18 Tests 0 Failures 0 Ignored 
+OK
+
+============================================================

@@ -1,0 +1,42 @@
+============================================================
+TEST REPORT: test_temp_sensor.exe
+============================================================
+
+EXECUTION SUMMARY
+--------------------
+Test Executable: test_temp_sensor.exe
+Exit Code: 0
+Overall Status: PASSED
+Individual Tests Run: 21
+Individual Tests Passed: 21
+Individual Tests Failed: 0
+
+DETAILED OUTPUT
+--------------------
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:168:test_read_temperature_raw_returns_value_in_expected_range:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:169:test_read_temperature_raw_returns_values_in_range_multiple_times:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:170:test_validate_temperature_range_valid_min_boundary:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:171:test_validate_temperature_range_valid_max_boundary:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:172:test_validate_temperature_range_valid_mid_range:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:173:test_validate_temperature_range_invalid_just_below_min:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:174:test_validate_temperature_range_invalid_just_above_max:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:175:test_validate_temperature_range_invalid_far_below_min:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:176:test_validate_temperature_range_invalid_far_above_max:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:177:test_check_temperature_status_critical_above_120:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:178:test_check_temperature_status_critical_at_max_range:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:179:test_check_temperature_status_hot_above_85:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:180:test_check_temperature_status_hot_at_120_boundary:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:181:test_check_temperature_status_cold_below_neg10:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:182:test_check_temperature_status_cold_at_min_range:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:183:test_check_temperature_status_normal_at_neg10_boundary:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:184:test_check_temperature_status_normal_at_85_boundary:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:185:test_check_temperature_status_normal_mid_range:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:186:test_get_temperature_celsius_calls_raw_to_celsius_and_returns_converted_value:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:187:test_get_temperature_celsius_with_negative_conversion:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project-test/build/tests/test_temp_sensor.c:188:test_get_temperature_celsius_with_zero_conversion:PASS
+
+-----------------------
+21 Tests 0 Failures 0 Ignored 
+OK
+
+============================================================
