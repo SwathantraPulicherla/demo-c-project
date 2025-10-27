@@ -27,17 +27,17 @@ jobs:
       with:
         python-version: '3.8'
 
-    - name: Install AI test generator dependencies
+    - name: Install AI test generator
       run: |
-        cd ai-tools/ai-c-test-generator
-        pip install -r requirements.txt
+        cd ai-tools
+        pip install -e .
 
     - name: Generate AI tests
       env:
-        GOOGLE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: |
         cd target-repo
-        python ../ai-tools/ai-c-test-generator/generator.py --api-key "$GOOGLE_API_KEY" --source src/
+        ai-c-testgen --api-key "$GEMINI_API_KEY" --source src/
 
     - name: Check for changes
       id: verify-changed-files
