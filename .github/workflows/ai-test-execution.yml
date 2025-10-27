@@ -1,0 +1,88 @@
+name: AI Test Execution
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  run-tests:
+    if: contains(github.event.issue.labels.*.name, 'ai-test-run')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout target repository
+      uses: actions/checkout@v4
+      with:
+        path: target-repo
+
+    - name: Checkout AI tools
+      uses: actions/checkout@v4
+      with:
+        repository: SwathantraPulicherla/ai-c-test-generator
+        path: ai-tools
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential lcov
+
+    - name: Install AI test runner dependencies
+      run: |
+        cd ai-tools/ai-test-runner
+        pip install -e .
+
+    - name: Run AI tests
+      id: test-execution
+      continue-on-error: true
+      run: |
+        cd target-repo
+        python -m ai_test_runner.cli --verbose
+
+    - name: Generate test summary
+      id: test-summary
+      run: |
+        cd target-repo
+        # Extract test results from the output
+        if [ -d "tests/test_reports" ]; then
+          TEST_SUMMARY=$(find tests/test_reports -name "*.txt" -exec cat {} \; | grep -E "(PASSED|FAILED|Individual Tests)" | tail -10)
+          echo "summary<<EOF" >> $GITHUB_OUTPUT
+          echo "$TEST_SUMMARY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "summary=No test reports found" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Comment test results on issue
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const testExitCode = ${{ steps.test-execution.outcome == 'success' }};
+          const testSummary = `${{ steps.test-summary.outputs.summary }}`;
+
+          let body;
+          if (testExitCode) {
+            body = `✅ **AI Test Execution Completed Successfully!**\n\n## Test Results\n\`\`\`\n${testSummary}\n\`\`\`\n\nAll tests passed! 🎉`;
+          } else {
+            body = `❌ **AI Test Execution Completed with Failures**\n\n## Test Results\n\`\`\`\n${testSummary}\n\`\`\`\n\nSome tests failed. Please check the detailed test reports in the \`tests/test_reports/\` directory.`;
+          }
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          });
+
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-reports
+        path: target-repo/tests/test_reports/
+        retention-days: 30
