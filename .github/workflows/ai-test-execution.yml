@@ -3,10 +3,11 @@ name: AI Test Execution
 on:
   issues:
     types: [opened, labeled, edited]
+  workflow_dispatch:  # Manual trigger for testing
 
 jobs:
   run-tests:
-    if: contains(github.event.issue.labels.*.name, 'ai-test-run')
+    if: contains(github.event.issue.labels.*.name, 'ai-test-run') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
