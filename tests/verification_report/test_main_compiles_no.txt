@@ -2,8 +2,9 @@ Validation Report for test_main.c
 Quality: Low
 Compiles: False
 Realistic: False
-Issues: 2
+Issues: 3
 
 Issues:
 - Invalid call to main() function - not suitable for unit testing
 - Floating-point values present but no TEST_ASSERT_FLOAT_WITHIN found
+- No test functions found (functions should start with 'test_')

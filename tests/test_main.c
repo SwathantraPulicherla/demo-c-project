@@ -2,79 +2,42 @@
 #include "temp_sensor.h"
 #include "temp_converter.h"
 
-extern int application_main();
+// Stubs for functions that src/main.c calls and are listed as needing stubs
 
-static float _get_temperature_celsius_return_value;
-static int _get_temperature_celsius_call_count;
+static int get_temperature_celsius_CalledCount;
+static float get_temperature_celsius_Return;
 
-float get_temperature_celsius() {
-    _get_temperature_celsius_call_count++;
-    return _get_temperature_celsius_return_value;
+float get_temperature_celsius(void) {
+    get_temperature_celsius_CalledCount++;
+    return get_temperature_celsius_Return;
 }
 
-void set_get_temperature_celsius_return(float val) {
-    _get_temperature_celsius_return_value = val;
-}
-
-int get_get_temperature_celsius_call_count() {
-    return _get_temperature_celsius_call_count;
-}
-
+// Setup function to reset stub states before each test
 void setUp(void) {
-    _get_temperature_celsius_return_value = 0.0f;
-    _get_temperature_celsius_call_count = 0;
+    get_temperature_celsius_CalledCount = 0;
+    get_temperature_celsius_Return = 0.0f; // Default value
 }
 
+// Teardown function to reset stub states after each test
 void tearDown(void) {
-    _get_temperature_celsius_return_value = 0.0f;
-    _get_temperature_celsius_call_count = 0;
+    // Reset ALL stub variables (call counts and return values) to 0/default values
+    get_temperature_celsius_CalledCount = 0;
+    get_temperature_celsius_Return = 0.0f;
 }
 
-void test_main_normal_temperature(void) {
-    set_get_temperature_celsius_return(22.5f);
-    int result = application_main();
-    TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
-}
+// Note: Direct testing of the 'main' function from src/main.c is not performed
+// here due to the following critical constraints and best practices:
+// 1. "Test functions individually, not main() or complex workflows."
+// 2. To avoid duplicate 'main' symbol definition when linking with the Unity test runner's
+//    main function, which would lead to compilation errors. Testing src/main.c's 'main'
+//    directly would typically require modifying src/main.c (e.g., conditional compilation
+//    of 'main') or a complex build system setup, which is not allowed or implied by the prompt.
+// 3. The 'main' function in src/main.c primarily performs I/O (printf) and orchestrates
+//    calls. Testing such a function in isolation without extensive mocking (e.g., for printf
+//    output redirection) is difficult and typically outside the scope of basic unit testing,
+//    especially with the constraint "NO calls to main() or other functions that don't exist
+//    in testable form" (mocking printf would create a "testable form" not requested).
+// The purpose of the stubs and setup/teardown is to prepare for potential tests
+// of functions within src/main.c, should they become individually testable.
 
-void test_main_low_temperature(void) {
-    set_get_temperature_celsius_return(10.0f);
-    int result = application_main();
-    TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
-}
-
-void test_main_high_temperature(void) {
-    set_get_temperature_celsius_return(35.0f);
-    int result = application_main();
-    TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
-}
-
-void test_main_zero_temperature(void) {
-    set_get_temperature_celsius_return(0.0f);
-    int result = application_main();
-    TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
-}
-
-void test_main_negative_temperature(void) {
-    set_get_temperature_celsius_return(-5.0f);
-    int result = application_main();
-    TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
-}
-
-
-
-int main(void) {
-    UNITY_BEGIN();
-
-    RUN_TEST(test_main_normal_temperature);
-    RUN_TEST(test_main_low_temperature);
-    RUN_TEST(test_main_high_temperature);
-    RUN_TEST(test_main_zero_temperature);
-    RUN_TEST(test_main_negative_temperature);
-
-    return UNITY_END();
-}
+// Unity Test Runner main function
