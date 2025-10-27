@@ -1,81 +1,80 @@
 #include "unity.h"
-#include "stdio.h"
 #include "temp_sensor.h"
 #include "temp_converter.h"
 
-// Define the main function from src/main.c for testing.
-// NOTE: This extern declaration allows calling main() from the test.
-// However, in a real build, linking src/main.c (which defines main)
-// with the Unity test runner (which also defines main) will lead to
-// a duplicate symbol linker error. A robust testing setup typically
-// renames main in the source file (e.g., to app_main) or uses specific
-// linker options for testing purposes. For the purpose of generating
-// compliant C code that attempts to test main as requested, we include
-// this declaration.
-extern int main(void);
+extern int application_main();
 
-// === Stub Implementations for FUNCTIONS THAT NEED STUBS ===
+static float _get_temperature_celsius_return_value;
+static int _get_temperature_celsius_call_count;
 
-// get_temperature_celsius stub
-static int get_temperature_celsius_CallCount;
-static float get_temperature_celsius_Return;
-
-float get_temperature_celsius(void) {
-    get_temperature_celsius_CallCount++;
-    return get_temperature_celsius_Return;
+float get_temperature_celsius() {
+    _get_temperature_celsius_call_count++;
+    return _get_temperature_celsius_return_value;
 }
 
-// === SetUp and TearDown Functions ===
+void set_get_temperature_celsius_return(float val) {
+    _get_temperature_celsius_return_value = val;
+}
+
+int get_get_temperature_celsius_call_count() {
+    return _get_temperature_celsius_call_count;
+}
 
 void setUp(void) {
-    // Reset stub state before each test
-    get_temperature_celsius_CallCount = 0;
-    get_temperature_celsius_Return = 25.0f; // Default realistic temperature
+    _get_temperature_celsius_return_value = 0.0f;
+    _get_temperature_celsius_call_count = 0;
 }
 
 void tearDown(void) {
-    // Reset stub state after each test
-    get_temperature_celsius_CallCount = 0;
-    get_temperature_celsius_Return = 0.0f;
+    _get_temperature_celsius_return_value = 0.0f;
+    _get_temperature_celsius_call_count = 0;
 }
 
-// === Test Functions for FUNCTIONS TO TEST ===
-
-// Test case for main function
-void test_main_calls_get_temperature_celsius_and_returns_zero(void) {
-    // Configure stub behavior
-    get_temperature_celsius_Return = 22.5f;
-
-    // Call the main function
-    int result = 
-
-    // Assertions
-    TEST_ASSERT_EQUAL(1, get_temperature_celsius_CallCount); // Verify get_temperature_celsius was called once
-    TEST_ASSERT_EQUAL(0, result); // Verify main returns 0
+void test_main_normal_temperature(void) {
+    set_get_temperature_celsius_return(22.5f);
+    int result = application_main();
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
 }
 
-// Test case for main with a different temperature (to ensure it adapts)
-void test_main_handles_different_temperature(void) {
-    // Configure stub behavior for a higher temperature
-    get_temperature_celsius_Return = 35.0f;
-
-    // Call the main function
-    int result = 
-
-    // Assertions
-    TEST_ASSERT_EQUAL(1, get_temperature_celsius_CallCount); // Verify get_temperature_celsius was called once
-    TEST_ASSERT_EQUAL(0, result); // Verify main returns 0
+void test_main_low_temperature(void) {
+    set_get_temperature_celsius_return(10.0f);
+    int result = application_main();
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
 }
 
-// === Unity Test Runner Main ===
+void test_main_high_temperature(void) {
+    set_get_temperature_celsius_return(35.0f);
+    int result = application_main();
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
+}
+
+void test_main_zero_temperature(void) {
+    set_get_temperature_celsius_return(0.0f);
+    int result = application_main();
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
+}
+
+void test_main_negative_temperature(void) {
+    set_get_temperature_celsius_return(-5.0f);
+    int result = application_main();
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(1, get_get_temperature_celsius_call_count());
+}
 
 
 
 int main(void) {
     UNITY_BEGIN();
 
-    RUN_TEST(test_main_calls_get_temperature_celsius_and_returns_zero);
-    RUN_TEST(test_main_handles_different_temperature);
+    RUN_TEST(test_main_normal_temperature);
+    RUN_TEST(test_main_low_temperature);
+    RUN_TEST(test_main_high_temperature);
+    RUN_TEST(test_main_zero_temperature);
+    RUN_TEST(test_main_negative_temperature);
 
     return UNITY_END();
 }

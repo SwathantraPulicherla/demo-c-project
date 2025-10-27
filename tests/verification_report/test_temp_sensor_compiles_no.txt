@@ -1,8 +1,10 @@
 Validation Report for test_temp_sensor.c
 Quality: Low
 Compiles: False
-Realistic: True
-Issues: 1
+Realistic: False
+Issues: 3
 
 Issues:
 - Invalid call to main() function - not suitable for unit testing
+- Temperature value 16807.0 seems unreasonably high
+- Temperature value 282475249.0 seems unreasonably high
