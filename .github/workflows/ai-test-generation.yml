@@ -28,6 +28,10 @@ jobs:
       with:
         python-version: '3.8'
 
+    - name: Upgrade pip and setuptools
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+
     - name: Install AI test generator
       run: |
         cd ai-tools
