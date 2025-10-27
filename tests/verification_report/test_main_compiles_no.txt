@@ -2,9 +2,10 @@ Validation Report for test_main.c
 Quality: Low
 Compiles: False
 Realistic: False
-Issues: 3
+Issues: 4
 
 Issues:
+- Invalid includes for non-existent headers: ['string.h']
 - Invalid call to main() function - not suitable for unit testing
-- Floating-point values present but no TEST_ASSERT_FLOAT_WITHIN found
-- No test functions found (functions should start with 'test_')
+- Temperature value 256.0 seems unreasonably high
+- Temperature value 256.0 seems unreasonably high
