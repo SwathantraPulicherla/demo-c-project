@@ -15,7 +15,7 @@ Copy the following workflow files to your C repository's `.github/workflows/` di
 
 In your repository settings, add the following secret:
 
-- `GOOGLE_API_KEY`: Your Google AI API key for test generation
+- `GEMINI_API_KEY`: Your Google Gemini API key for test generation
 
 ### 3. Repository Structure Requirements
 

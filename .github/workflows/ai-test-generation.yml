@@ -34,7 +34,7 @@ jobs:
 
     - name: Generate AI tests
       env:
-        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        GOOGLE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: |
         cd target-repo
         python ../ai-tools/ai-c-test-generator/generator.py --api-key "$GOOGLE_API_KEY" --source src/
