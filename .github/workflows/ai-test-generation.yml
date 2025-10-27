@@ -2,7 +2,7 @@ name: AI Test Generation
 
 on:
   issues:
-    types: [opened, labeled]
+    types: [opened, labeled, edited]
 
 jobs:
   generate-tests:
