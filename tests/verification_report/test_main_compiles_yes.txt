@@ -1,4 +1,4 @@
-Validation Report for test_temp_converter.c
+Validation Report for test_main.c
 Quality: High
 Compiles: True
 Realistic: True

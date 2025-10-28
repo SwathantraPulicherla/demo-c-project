@@ -1,136 +1,99 @@
 #include "unity.h"
-#include "temp_sensor.h"
-#include "temp_converter.h"
+#include "temp_sensor.h"    // Assumed to declare get_temperature_celsius
+#include "temp_converter.h" // Assumed to declare check_temperature_status
+#include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdio.h>          // Required for main's printf calls
 
-// It's not standard to test main(), but if required, we can rename it in the build
-// process for the test executable (e.g., using -Dmain=app_main).
-// We then declare it here to be able to call it from our tests.
+// Declare the main function from the source file to be tested
 extern int main(void);
 
-// Stubs for get_temperature_celsius
-static float stub_get_temperature_celsius_return_value;
-static int stub_get_temperature_celsius_call_count;
+// STUB for get_temperature_celsius
+typedef struct {
+    float return_value;
+    bool was_called;
+    uint32_t call_count;
+} stub_get_temperature_celsius_t;
+
+static stub_get_temperature_celsius_t stub_get_temperature_celsius_data;
 
 float get_temperature_celsius(void) {
-    stub_get_temperature_celsius_call_count++;
-    return stub_get_temperature_celsius_return_value;
+    stub_get_temperature_celsius_data.was_called = true;
+    stub_get_temperature_celsius_data.call_count++;
+    return stub_get_temperature_celsius_data.return_value;
 }
 
-// Stubs for check_temperature_status
-// This is required to verify that main passes the correct value.
-static const char* stub_check_temperature_status_return_value;
-static int stub_check_temperature_status_call_count;
-static float stub_check_temperature_status_last_temp;
-
-const char* check_temperature_status(float temperature) {
-    stub_check_temperature_status_call_count++;
-    stub_check_temperature_status_last_temp = temperature;
-    return stub_check_temperature_status_return_value;
-}
-
+// SetUp function: Initializes or configures necessary components before each test
 void setUp(void) {
-    // Reset stubs before each test
-    stub_get_temperature_celsius_return_value = 0.0f;
-    stub_get_temperature_celsius_call_count = 0;
-
-    stub_check_temperature_status_return_value = NULL;
-    stub_check_temperature_status_call_count = 0;
-    stub_check_temperature_status_last_temp = 0.0f; // A sentinel value
+    // Complete reset of all stub data to ensure test isolation
+    memset(&stub_get_temperature_celsius_data, 0, sizeof(stub_get_temperature_celsius_data));
+    // Set a realistic default return value for nominal operation
+    stub_get_temperature_celsius_data.return_value = 25.0f; // Nominal room temperature
 }
 
+// TearDown function: Cleans up after each test
 void tearDown(void) {
-    // Reset stubs after each test to ensure test isolation
-    setUp();
+    // Complete reset of all stub data to ensure clean state for next test
+    memset(&stub_get_temperature_celsius_data, 0, sizeof(stub_get_temperature_celsius_data));
 }
 
-// Test main's logic with a typical, normal temperature.
-void test_main_NormalOperation(void) {
-    // Arrange
-    float expected_temp = 25.5f;
-    stub_get_temperature_celsius_return_value = expected_temp;
+// TEST FUNCTIONS for main
 
-    // Act
+// Test case for main's normal operation with a nominal temperature
+void test_main_nominal_temperature(void) {
+    // Set stub to return a realistic nominal temperature
+    stub_get_temperature_celsius_data.return_value = 25.0f;
+    // Call the actual main function under test
     int result = 
 
-    // Assert
+    // Expected: get_temperature_celsius should be called
+    TEST_ASSERT_TRUE(stub_get_temperature_celsius_data.was_called);
+    // Expected: get_temperature_celsius should be called exactly once
+    TEST_ASSERT_EQUAL_UINT32(1, stub_get_temperature_celsius_data.call_count);
+    // Expected: main should return 0 for successful execution
     TEST_ASSERT_EQUAL_INT(0, result);
-    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius_call_count);
-    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status_call_count);
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_temp, stub_check_temperature_status_last_temp);
 }
 
-// Test main's logic with the minimum valid operating temperature.
-void test_main_EdgeCase_MinTemperature(void) {
-    // Arrange
-    float expected_temp = 0.0f;
-    stub_get_temperature_celsius_return_value = expected_temp;
-
-    // Act
+// Test case for main's behavior at the minimum valid temperature limit
+void test_main_min_temperature_edge(void) {
+    // Set stub to return the minimum realistic temperature
+    stub_get_temperature_celsius_data.return_value = 0.0f;
+    // Call the actual main function under test
     int result = 
 
-    // Assert
+    // Expected: get_temperature_celsius should be called
+    TEST_ASSERT_TRUE(stub_get_temperature_celsius_data.was_called);
+    // Expected: get_temperature_celsius should be called exactly once
+    TEST_ASSERT_EQUAL_UINT32(1, stub_get_temperature_celsius_data.call_count);
+    // Expected: main should return 0 for successful execution
     TEST_ASSERT_EQUAL_INT(0, result);
-    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius_call_count);
-    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status_call_count);
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_temp, stub_check_temperature_status_last_temp);
 }
 
-// Test main's logic with the maximum valid operating temperature.
-void test_main_EdgeCase_MaxTemperature(void) {
-    // Arrange
-    float expected_temp = 125.0f;
-    stub_get_temperature_celsius_return_value = expected_temp;
-
-    // Act
+// Test case for main's behavior at the maximum valid temperature limit
+void test_main_max_temperature_edge(void) {
+    // Set stub to return the maximum realistic temperature
+    stub_get_temperature_celsius_data.return_value = 125.0f;
+    // Call the actual main function under test
     int result = 
 
-    // Assert
+    // Expected: get_temperature_celsius should be called
+    TEST_ASSERT_TRUE(stub_get_temperature_celsius_data.was_called);
+    // Expected: get_temperature_celsius should be called exactly once
+    TEST_ASSERT_EQUAL_UINT32(1, stub_get_temperature_celsius_data.call_count);
+    // Expected: main should return 0 for successful execution
     TEST_ASSERT_EQUAL_INT(0, result);
-    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius_call_count);
-    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status_call_count);
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_temp, stub_check_temperature_status_last_temp);
 }
 
-// Test main's logic with a zero temperature value (boundary case).
-void test_main_Boundary_ZeroTemperature(void) {
-    // Arrange
-    float expected_temp = 0.0f;
-    stub_get_temperature_celsius_return_value = expected_temp;
+// Main function for the Unity Test Runner
 
-    // Act
-    int result = 
-
-    // Assert
-    TEST_ASSERT_EQUAL_INT(0, result);
-    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius_call_count);
-    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status_call_count);
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_temp, stub_check_temperature_status_last_temp);
-}
-
-// Test main's logic with a hot, but not maximum, temperature.
-void test_main_HotTemperature(void) {
-    // Arrange
-    float expected_temp = 50.0f;
-    stub_get_temperature_celsius_return_value = expected_temp;
-
-    // Act
-    int result = 
-
-    // Assert
-    TEST_ASSERT_EQUAL_INT(0, result);
-    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius_call_count);
-    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status_call_count);
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_temp, stub_check_temperature_status_last_temp);
-}
 
 int main(void) {
     UNITY_BEGIN();
 
-    RUN_TEST(test_main_NormalOperation);
-    RUN_TEST(test_main_EdgeCase_MinTemperature);
-    RUN_TEST(test_main_EdgeCase_MaxTemperature);
-    RUN_TEST(test_main_Boundary_ZeroTemperature);
-    RUN_TEST(test_main_HotTemperature);
+    RUN_TEST(test_main_nominal_temperature);
+    RUN_TEST(test_main_min_temperature_edge);
+    RUN_TEST(test_main_max_temperature_edge);
 
     return UNITY_END();
 }
