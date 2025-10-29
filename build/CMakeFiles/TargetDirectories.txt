@@ -1,5 +1,4 @@
 C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/CMakeFiles/unity.dir
-C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/CMakeFiles/test_main.dir
 C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/CMakeFiles/test_temp_converter.dir
 C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/CMakeFiles/test_temp_sensor.dir
 C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/CMakeFiles/edit_cache.dir

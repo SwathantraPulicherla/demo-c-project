@@ -45,8 +45,9 @@ cmake_ninja_workdir = C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Ho
 build cmake_object_order_depends_target_unity: phony || .
 
 build CMakeFiles/unity.dir/unity/src/unity.c.obj: C_COMPILER__unity_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src/unity.c || cmake_object_order_depends_target_unity
+  DEFINES = -DUNIT_TEST
   DEP_FILE = CMakeFiles\unity.dir\unity\src\unity.c.obj.d
-  FLAGS = -std=gnu99
+  FLAGS = --coverage -std=gnu99
   INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
   OBJECT_DIR = CMakeFiles\unity.dir
   OBJECT_FILE_DIR = CMakeFiles\unity.dir\unity\src
@@ -60,58 +61,12 @@ build CMakeFiles/unity.dir/unity/src/unity.c.obj: C_COMPILER__unity_unscanned_ C
 # Link the static library libunity.a
 
 build libunity.a: C_STATIC_LIBRARY_LINKER__unity_ CMakeFiles/unity.dir/unity/src/unity.c.obj
+  LANGUAGE_COMPILE_FLAGS = --coverage
   OBJECT_DIR = CMakeFiles\unity.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
   TARGET_FILE = libunity.a
   TARGET_PDB = unity.a.dbg
-
-# =============================================================================
-# Object build statements for EXECUTABLE target test_main
-
-
-#############################################
-# Order-only phony target for test_main
-
-build cmake_object_order_depends_target_test_main: phony || cmake_object_order_depends_target_unity
-
-build CMakeFiles/test_main.dir/tests/test_main.c.obj: C_COMPILER__test_main_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_main.c || cmake_object_order_depends_target_test_main
-  DEP_FILE = CMakeFiles\test_main.dir\tests\test_main.c.obj.d
-  FLAGS = -std=gnu99
-  INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
-  OBJECT_DIR = CMakeFiles\test_main.dir
-  OBJECT_FILE_DIR = CMakeFiles\test_main.dir\tests
-
-build CMakeFiles/test_main.dir/src/temp_converter.c.obj: C_COMPILER__test_main_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src/temp_converter.c || cmake_object_order_depends_target_test_main
-  DEP_FILE = CMakeFiles\test_main.dir\src\temp_converter.c.obj.d
-  FLAGS = -std=gnu99
-  INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
-  OBJECT_DIR = CMakeFiles\test_main.dir
-  OBJECT_FILE_DIR = CMakeFiles\test_main.dir\src
-
-build CMakeFiles/test_main.dir/src/main.c.obj: C_COMPILER__test_main_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src/main.c || cmake_object_order_depends_target_test_main
-  DEP_FILE = CMakeFiles\test_main.dir\src\main.c.obj.d
-  FLAGS = -std=gnu99
-  INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
-  OBJECT_DIR = CMakeFiles\test_main.dir
-  OBJECT_FILE_DIR = CMakeFiles\test_main.dir\src
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target test_main
-
-
-#############################################
-# Link the executable test_main.exe
-
-build test_main.exe: C_EXECUTABLE_LINKER__test_main_ CMakeFiles/test_main.dir/tests/test_main.c.obj CMakeFiles/test_main.dir/src/temp_converter.c.obj CMakeFiles/test_main.dir/src/main.c.obj | libunity.a || libunity.a
-  LINK_LIBRARIES = libunity.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\test_main.dir
-  POST_BUILD = cd .
-  PRE_LINK = cd .
-  TARGET_FILE = test_main.exe
-  TARGET_IMPLIB = libtest_main.dll.a
-  TARGET_PDB = test_main.exe.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target test_temp_converter
@@ -123,29 +78,33 @@ build test_main.exe: C_EXECUTABLE_LINKER__test_main_ CMakeFiles/test_main.dir/te
 build cmake_object_order_depends_target_test_temp_converter: phony || cmake_object_order_depends_target_unity
 
 build CMakeFiles/test_temp_converter.dir/tests/test_temp_converter.c.obj: C_COMPILER__test_temp_converter_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c || cmake_object_order_depends_target_test_temp_converter
+  DEFINES = -DUNIT_TEST
   DEP_FILE = CMakeFiles\test_temp_converter.dir\tests\test_temp_converter.c.obj.d
-  FLAGS = -std=gnu99
+  FLAGS = --coverage -std=gnu99
   INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
   OBJECT_DIR = CMakeFiles\test_temp_converter.dir
   OBJECT_FILE_DIR = CMakeFiles\test_temp_converter.dir\tests
 
 build CMakeFiles/test_temp_converter.dir/src/main.c.obj: C_COMPILER__test_temp_converter_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src/main.c || cmake_object_order_depends_target_test_temp_converter
+  DEFINES = -DUNIT_TEST
   DEP_FILE = CMakeFiles\test_temp_converter.dir\src\main.c.obj.d
-  FLAGS = -std=gnu99
+  FLAGS = --coverage -std=gnu99
   INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
   OBJECT_DIR = CMakeFiles\test_temp_converter.dir
   OBJECT_FILE_DIR = CMakeFiles\test_temp_converter.dir\src
 
 build CMakeFiles/test_temp_converter.dir/src/temp_converter.c.obj: C_COMPILER__test_temp_converter_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src/temp_converter.c || cmake_object_order_depends_target_test_temp_converter
+  DEFINES = -DUNIT_TEST
   DEP_FILE = CMakeFiles\test_temp_converter.dir\src\temp_converter.c.obj.d
-  FLAGS = -std=gnu99
+  FLAGS = --coverage -std=gnu99
   INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
   OBJECT_DIR = CMakeFiles\test_temp_converter.dir
   OBJECT_FILE_DIR = CMakeFiles\test_temp_converter.dir\src
 
 build CMakeFiles/test_temp_converter.dir/src/temp_sensor.c.obj: C_COMPILER__test_temp_converter_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src/temp_sensor.c || cmake_object_order_depends_target_test_temp_converter
+  DEFINES = -DUNIT_TEST
   DEP_FILE = CMakeFiles\test_temp_converter.dir\src\temp_sensor.c.obj.d
-  FLAGS = -std=gnu99
+  FLAGS = --coverage -std=gnu99
   INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
   OBJECT_DIR = CMakeFiles\test_temp_converter.dir
   OBJECT_FILE_DIR = CMakeFiles\test_temp_converter.dir\src
@@ -159,6 +118,8 @@ build CMakeFiles/test_temp_converter.dir/src/temp_sensor.c.obj: C_COMPILER__test
 # Link the executable test_temp_converter.exe
 
 build test_temp_converter.exe: C_EXECUTABLE_LINKER__test_temp_converter_ CMakeFiles/test_temp_converter.dir/tests/test_temp_converter.c.obj CMakeFiles/test_temp_converter.dir/src/main.c.obj CMakeFiles/test_temp_converter.dir/src/temp_converter.c.obj CMakeFiles/test_temp_converter.dir/src/temp_sensor.c.obj | libunity.a || libunity.a
+  FLAGS = --coverage
+  LINK_FLAGS = --coverage
   LINK_LIBRARIES = libunity.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\test_temp_converter.dir
   POST_BUILD = cd .
@@ -177,22 +138,25 @@ build test_temp_converter.exe: C_EXECUTABLE_LINKER__test_temp_converter_ CMakeFi
 build cmake_object_order_depends_target_test_temp_sensor: phony || cmake_object_order_depends_target_unity
 
 build CMakeFiles/test_temp_sensor.dir/tests/test_temp_sensor.c.obj: C_COMPILER__test_temp_sensor_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_sensor.c || cmake_object_order_depends_target_test_temp_sensor
+  DEFINES = -DUNIT_TEST
   DEP_FILE = CMakeFiles\test_temp_sensor.dir\tests\test_temp_sensor.c.obj.d
-  FLAGS = -std=gnu99
+  FLAGS = --coverage -std=gnu99
   INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
   OBJECT_DIR = CMakeFiles\test_temp_sensor.dir
   OBJECT_FILE_DIR = CMakeFiles\test_temp_sensor.dir\tests
 
 build CMakeFiles/test_temp_sensor.dir/src/main.c.obj: C_COMPILER__test_temp_sensor_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src/main.c || cmake_object_order_depends_target_test_temp_sensor
+  DEFINES = -DUNIT_TEST
   DEP_FILE = CMakeFiles\test_temp_sensor.dir\src\main.c.obj.d
-  FLAGS = -std=gnu99
+  FLAGS = --coverage -std=gnu99
   INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
   OBJECT_DIR = CMakeFiles\test_temp_sensor.dir
   OBJECT_FILE_DIR = CMakeFiles\test_temp_sensor.dir\src
 
 build CMakeFiles/test_temp_sensor.dir/src/temp_sensor.c.obj: C_COMPILER__test_temp_sensor_unscanned_ C$:/Users/SwathantraPulicherla/OneDrive$ -$ requisimus$ Holding$ GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src/temp_sensor.c || cmake_object_order_depends_target_test_temp_sensor
+  DEFINES = -DUNIT_TEST
   DEP_FILE = CMakeFiles\test_temp_sensor.dir\src\temp_sensor.c.obj.d
-  FLAGS = -std=gnu99
+  FLAGS = --coverage -std=gnu99
   INCLUDES = -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/unity/src" -I"C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/src"
   OBJECT_DIR = CMakeFiles\test_temp_sensor.dir
   OBJECT_FILE_DIR = CMakeFiles\test_temp_sensor.dir\src
@@ -206,6 +170,8 @@ build CMakeFiles/test_temp_sensor.dir/src/temp_sensor.c.obj: C_COMPILER__test_te
 # Link the executable test_temp_sensor.exe
 
 build test_temp_sensor.exe: C_EXECUTABLE_LINKER__test_temp_sensor_ CMakeFiles/test_temp_sensor.dir/tests/test_temp_sensor.c.obj CMakeFiles/test_temp_sensor.dir/src/main.c.obj CMakeFiles/test_temp_sensor.dir/src/temp_sensor.c.obj | libunity.a || libunity.a
+  FLAGS = --coverage
+  LINK_FLAGS = --coverage
   LINK_LIBRARIES = libunity.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\test_temp_sensor.dir
   POST_BUILD = cd .
@@ -240,8 +206,6 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build test_main: phony test_main.exe
-
 build test_temp_converter: phony test_temp_converter.exe
 
 build test_temp_sensor: phony test_temp_sensor.exe
@@ -256,7 +220,7 @@ build unity: phony libunity.a
 #############################################
 # Folder: C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build
 
-build all: phony libunity.a test_main.exe test_temp_converter.exe test_temp_sensor.exe
+build all: phony libunity.a test_temp_converter.exe test_temp_sensor.exe
 
 # =============================================================================
 # Built-in targets
