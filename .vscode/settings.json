@@ -11,7 +11,7 @@
     "editor.gotoLocation.multipleDefinitions": "peek",
     "editor.gotoLocation.multipleImplementations": "peek",
     "editor.gotoLocation.multipleReferences": "peek",
-    "editor.definitionLinkOpensInPeek": true,
+    "editor.definitionLinkOpensInPeek": false,
     "editor.quickSuggestions": {
         "other": true,
         "comments": false,
@@ -25,7 +25,22 @@
     "editor.tabCompletion": "on",
     "editor.wordBasedSuggestions": "matchingDocuments",
     "editor.suggest.showKeywords": true,
-    .
-    .
-    .
+    "editor.suggest.showSnippets": true,
+    "editor.suggest.showWords": true,
+    "workbench.editor.enablePreview": true,
+    "workbench.editor.showTabs": "multiple",
+    "outline.showVariables": true,
+    "outline.showFunctions": true,
+    "outline.showConstants": true,
+    "outline.showEnums": true,
+    "outline.showEnumMembers": true,
+    "outline.showStructs": true,
+    "outline.showInterfaces": true,
+    "outline.showTypeParameters": true,
+    "outline.showModules": true,
+    "outline.showProperties": true,
+    "outline.showEvents": true,
+    "outline.showOperators": true,
+    "breadcrumbs.enabled": true,
+    "references.preferredLocation": "peek"
 }
