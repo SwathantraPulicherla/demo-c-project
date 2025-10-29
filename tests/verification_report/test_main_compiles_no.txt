@@ -2,8 +2,7 @@ Validation Report for test_main.c
 Quality: Low
 Compiles: False
 Realistic: True
-Issues: 2
+Issues: 1
 
 Issues:
-- Invalid call to main() function - not suitable for unit testing
-- tearDown() function should reset stub variables (call counts and return values)
+- Invalid includes for non-existent headers: ['main.h']
