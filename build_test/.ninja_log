@@ -1,0 +1,10 @@
+# ninja log v7
+41	238	7834293499938625	CMakeFiles/test_temp_converter.dir/src/temp_converter.c.obj	c81d7f3381d0bc27
+79	276	7834293500323109	CMakeFiles/test_temp_sensor.dir/src/temp_converter.c.obj	be0ed0a5d9c10626
+70	488	7834293500223048	CMakeFiles/test_temp_sensor.dir/src/temp_sensor.c.obj	95f6b67f2f063ac1
+53	588	7834293500048679	CMakeFiles/test_temp_sensor.dir/tests/test_temp_sensor.c.obj	e9787c16d3dd5bdb
+9	589	7834293499616999	CMakeFiles/test_temp_converter.dir/tests/test_temp_converter.c.obj	bd41556037346a07
+26	756	7834293499797122	CMakeFiles/test_temp_converter.dir/unity/src/unity.c.obj	42adec95e273d83b
+61	797	7834293500128681	CMakeFiles/test_temp_sensor.dir/unity/src/unity.c.obj	fd58c9094d0fed7
+798	1082	7834293507501609	test_temp_sensor.exe	68c6ec5193259bdc
+757	1093	7834293507091524	test_temp_converter.exe	3d9c5871b69f1469
