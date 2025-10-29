@@ -5,6 +5,8 @@
     "C_Cpp.codeFolding": true,
     "C_Cpp.callHierarchy.enabled": true,
     "C_Cpp.referencesCodeLens.enabled": true,
+    "C_Cpp.codeNavigation": "enabled",
+    "C_Cpp.workspaceSymbols": "all",
     "editor.gotoLocation.multipleDefinitions": "peek",
     "editor.gotoLocation.multipleImplementations": "peek",
     "editor.gotoLocation.multipleReferences": "peek",
