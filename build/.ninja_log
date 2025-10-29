@@ -1,0 +1,20 @@
+# ninja log v7
+31	263	7834414627649653	CMakeFiles/test_main.dir/src/main.c.obj	c761e58077cbe531
+41	303	7834414627750844	CMakeFiles/test_main.dir/src/temp_sensor.c.obj	ff4ed6c0d257d43
+64	336	7834414627979761	CMakeFiles/test_main.dir/src/temp_converter.c.obj	77cac745921b70d
+95	368	7834414628276613	CMakeFiles/test_temp_converter.dir/tests/test_temp_converter.c.obj	ad5397a5be8cce2a
+15	455	7834414627478382	CMakeFiles/test_main.dir/unity/src/unity.c.obj	ed94bb544f1ac0b9
+107	507	7834414628399203	CMakeFiles/test_temp_converter.dir/unity/src/unity.c.obj	a62cce4f2da090c
+142	510	7834414628753806	CMakeFiles/test_temp_sensor.dir/unity/src/unity.c.obj	2bcf06eede252e2c
+46	951	7834458470534741	CMakeFiles/test_main.dir/src/temp_converter.c.obj	fab84b941261c7aa
+91	995	7834458471007461	CMakeFiles/test_temp_converter.dir/src/temp_converter.c.obj	85de70aac766b3dc
+57	996	7834458470677486	CMakeFiles/test_main.dir/src/main.c.obj	f657656a42635a9a
+80	1014	7834458470881478	CMakeFiles/test_temp_converter.dir/src/main.c.obj	b7c684dcfc466719
+35	1021	7834458470449515	CMakeFiles/test_main.dir/tests/test_main.c.obj	f4041de7b0c2b4b8
+122	1022	7834458471322706	CMakeFiles/test_temp_sensor.dir/src/main.c.obj	b3ad69986c4e3e5c
+131	1027	7834458471403567	CMakeFiles/test_temp_sensor.dir/src/temp_sensor.c.obj	e739faa23feb71af
+103	1044	7834458471114344	CMakeFiles/test_temp_converter.dir/src/temp_sensor.c.obj	6f5030d9e880a884
+112	1054	7834458471181424	CMakeFiles/test_temp_sensor.dir/tests/test_temp_sensor.c.obj	cbb28381ad555e82
+67	1060	7834458470774175	CMakeFiles/test_temp_converter.dir/tests/test_temp_converter.c.obj	394dd081e1ad2851
+23	1114	7834458470332672	CMakeFiles/unity.dir/unity/src/unity.c.obj	8b188c1551cdaab5
+1114	1284	7834458481200110	libunity.a	1a59a0237abc3e8a
