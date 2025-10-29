@@ -80,7 +80,7 @@ void test_main_normal_temperature_scenario(void) {
     stub_check_temperature_status.return_value = status;
 
     // Call main function directly
-    result = 
+    result = main();
 
     // Expected: get_temperature_celsius should be called exactly once
     TEST_ASSERT_EQUAL_UINT32(1, stub_get_temperature_celsius.call_count);
@@ -107,7 +107,7 @@ void test_main_cold_temperature_scenario(void) {
     stub_check_temperature_status.return_value = status;
 
     // Call main function directly
-    result = 
+    result = main();
 
     // Expected: get_temperature_celsius should be called exactly once
     TEST_ASSERT_EQUAL_UINT32(1, stub_get_temperature_celsius.call_count);
@@ -134,7 +134,7 @@ void test_main_hot_temperature_scenario(void) {
     stub_check_temperature_status.return_value = status;
 
     // Call main function directly
-    result = 
+    result = main();
 
     // Expected: get_temperature_celsius should be called exactly once
     TEST_ASSERT_EQUAL_UINT32(1, stub_get_temperature_celsius.call_count);

@@ -22,8 +22,8 @@ void test_raw_to_celsius_min_adc_value(void) {
     float result;
     // Test with the minimum possible ADC raw value (0)
     result = raw_to_celsius(0);
-    // Expected: (0 / 1023.0f) * 165.0f - 40.0f = 0.0f
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, 0.0f, result);
+    // Expected: (0 / 1023.0f) * 165.0f - 40.0f = -40.0f
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, -40.0f, result);
 }
 
 void test_raw_to_celsius_max_adc_value(void) {
@@ -46,8 +46,8 @@ void test_raw_to_celsius_cold_value(void) {
     float result;
     // Test with an ADC raw value that results in a cold temperature (e.g., 185 for -10C)
     result = raw_to_celsius(185);
-    // Expected: (185 / 1023.0f) * 165.0f - 40.0f = ~0.0f
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, 0.0f, result);
+    // Expected: (185 / 1023.0f) * 165.0f - 40.0f = ~-10.2f
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, -10.2f, result);
 }
 
 void test_raw_to_celsius_hot_value(void) {
@@ -80,8 +80,8 @@ void test_celsius_to_fahrenheit_absolute_min_c_valid_range(void) {
     float result;
     // Test with the minimum temperature output from raw_to_celsius
     result = celsius_to_fahrenheit(0.0f);
-    // Expected: (0.0f * 9.0f / 5.0f) + 32.0f = 0.0f + 32.0f = 0.0f
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, 0.0f, result);
+    // Expected: (0.0f * 9.0f / 5.0f) + 32.0f = 0.0f + 32.0f = 32.0f
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 32.0f, result);
 }
 
 void test_celsius_to_fahrenheit_absolute_max_c_valid_range(void) {

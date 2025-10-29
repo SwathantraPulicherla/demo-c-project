@@ -60,8 +60,8 @@ void tearDown(void) {
 void test_read_temperature_raw_returnsWithinExpectedRange(void) {
     int result = read_temperature_raw();
     // Expected: The return value should be within the 0 to 1023 range based on `rand() % 1024`.
-    TEST_ASSERT_TRUE(result >= 0, "Expected raw temperature to be >= 0");
-    TEST_ASSERT_TRUE(result <= 1023, "Expected raw temperature to be <= 1023");
+    TEST_ASSERT_TRUE(result >= 0);
+    TEST_ASSERT_TRUE(result <= 1023);
 }
 
 // Tests for validate_temperature_range(float temp_c)
@@ -82,8 +82,8 @@ void test_validate_temperature_range_midRangeValid(void) {
 }
 
 void test_validate_temperature_range_belowMinInvalid(void) {
-    // Expected: 0.0f is below the minimum valid temperature (0.0f), so it should return false.
-    TEST_ASSERT_FALSE(validate_temperature_range(0.0f));
+    // Expected: -40.1f is less than the minimum valid temperature (-40.0f), so it should return false.
+    TEST_ASSERT_FALSE(validate_temperature_range(-40.1f));
 }
 
 void test_validate_temperature_range_aboveMaxInvalid(void) {
@@ -129,13 +129,13 @@ void test_check_temperature_status_normalEdgeBelowHot(void) {
 }
 
 void test_check_temperature_status_coldBelowNeg10(void) {
-    // Expected: 0.0f is < 0.0f, so the status should be "COLD".
-    TEST_ASSERT_EQUAL_STRING("COLD", check_temperature_status(0.0f));
+    // Expected: -10.1f is < -10.0f, so the status should be "COLD".
+    TEST_ASSERT_EQUAL_STRING("COLD", check_temperature_status(-10.1f));
 }
 
 void test_check_temperature_status_coldMinValidTemp(void) {
-    // Expected: 0.0f (min valid temperature) is < 0.0f, so the status should be "COLD".
-    TEST_ASSERT_EQUAL_STRING("COLD", check_temperature_status(0.0f));
+    // Expected: -40.0f (min valid temperature) is less than -10.0f, so the status should be "COLD".
+    TEST_ASSERT_EQUAL_STRING("COLD", check_temperature_status(-40.0f));
 }
 
 // Tests for get_temperature_celsius()
@@ -150,8 +150,8 @@ void test_get_temperature_celsius_normalOperation(void) {
     TEST_ASSERT_TRUE(stub_raw_to_celsius.was_called);
     TEST_ASSERT_EQUAL_UINT32(1, stub_raw_to_celsius.call_count);
     // Expected: The raw value passed to raw_to_celsius should be within 00.0f (from read_temperature_raw).
-    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value >= 0, "Raw value passed to stub should be >= 0");
-    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value <= 1023, "Raw value passed to stub should be <= 1023");
+    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value >= 0);
+    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value <= 1023);
 
     // Expected: The final result should match the stubbed return value from raw_to_celsius.
     TEST_ASSERT_FLOAT_WITHIN(0.1f, 25.5f, result);
@@ -167,8 +167,8 @@ void test_get_temperature_celsius_zeroCelsiusConversion(void) {
     TEST_ASSERT_TRUE(stub_raw_to_celsius.was_called);
     TEST_ASSERT_EQUAL_UINT32(1, stub_raw_to_celsius.call_count);
     // Expected: The raw value passed to raw_to_celsius should be within 00.0f.
-    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value >= 0, "Raw value passed to stub should be >= 0");
-    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value <= 1023, "Raw value passed to stub should be <= 1023");
+    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value >= 0);
+    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value <= 1023);
 
     // Expected: The final result should match the stubbed return value from raw_to_celsius.
     TEST_ASSERT_FLOAT_WITHIN(0.1f, 0.0f, result);
@@ -184,8 +184,8 @@ void test_get_temperature_celsius_negativeCelsiusConversion(void) {
     TEST_ASSERT_TRUE(stub_raw_to_celsius.was_called);
     TEST_ASSERT_EQUAL_UINT32(1, stub_raw_to_celsius.call_count);
     // Expected: The raw value passed to raw_to_celsius should be within 00.0f.
-    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value >= 0, "Raw value passed to stub should be >= 0");
-    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value <= 1023, "Raw value passed to stub should be <= 1023");
+    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value >= 0);
+    TEST_ASSERT_TRUE(stub_raw_to_celsius.last_raw_value <= 1023);
 
     // Expected: The final result should match the stubbed return value from raw_to_celsius.
     TEST_ASSERT_FLOAT_WITHIN(0.1f, 0.0f, result);
