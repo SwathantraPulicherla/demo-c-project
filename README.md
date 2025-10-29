@@ -58,7 +58,7 @@ ai-c-testgen --verbose --source-dir src --output tests
 
 - **Unit Tests**: Comprehensive Unity framework tests for each C module
 - **Stub Functions**: Automatically generated stubs for dependencies
-- **Validation Reports**: Detailed quality assessment in `tests/verification_report/`
+- **Validation Reports**: Detailed quality assessment in `tests/compilation_report/`
 - **Compilation Checks**: Ensures all generated tests compile correctly
 
 ## AI Test Runner Integration
