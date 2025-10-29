@@ -1,7 +1,8 @@
 Validation Report for test_main.c
-Quality: High
+Quality: Medium
 Compiles: True
 Realistic: True
-Issues: 0
+Issues: 1
 
 Issues:
+- Missing edge case tests (min/max values, boundaries)
