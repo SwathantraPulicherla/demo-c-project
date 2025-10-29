@@ -1,162 +1,167 @@
 /* test_main.c – Auto-generated Expert Unity Tests */
 #include "unity.h"
-#include <stdio.h> // Included as per source file
-#include <stdint.h>
-#include <stdbool.h>
-#include <string.h> // For memset
+#include <stdint.h>   // For uint32_t
+#include <stdbool.h>  // For bool
+#include <string.h>   // For memset
 
-// External function declarations (from main.c and other modules)
+// Declare main externally to allow testing it directly, as it's typically excluded by UNIT_TEST define
 extern int main(void);
-extern float get_temperature_celsius(void);
-extern const char* check_temperature_status(float temperature);
 
-// --- STUB DEFINITIONS FOR EXTERNAL DEPENDENCIES ---
+// =================================================================================================
+// STUB DECLARATIONS AND CONTROL STRUCTURES
+// These stubs are for functions external to main.c that main() depends on.
+// =================================================================================================
 
-// Stub control structure for get_temperature_celsius
+// Stub for get_temperature_celsius()
 typedef struct {
     float return_value;
     uint32_t call_count;
-} get_temperature_celsius_stub_t;
-static get_temperature_celsius_stub_t get_temperature_celsius_stub = {0};
+} stub_get_temperature_celsius_t;
+static stub_get_temperature_celsius_t stub_get_temperature_celsius = {0};
 
-// Stub implementation for get_temperature_celsius
+// Mock implementation of get_temperature_celsius
 float get_temperature_celsius(void) {
-    get_temperature_celsius_stub.call_count++;
-    return get_temperature_celsius_stub.return_value;
+    stub_get_temperature_celsius.call_count++;
+    return stub_get_temperature_celsius.return_value;
 }
 
-// Stub control structure for check_temperature_status
+// Stub for check_temperature_status()
 typedef struct {
     const char* return_value;
     uint32_t call_count;
-    float last_temperature_param;
-} check_temperature_status_stub_t;
-static check_temperature_status_stub_t check_temperature_status_stub = {0};
+    float last_temperature_c; // Captured parameter for verification
+} stub_check_temperature_status_t;
+static stub_check_temperature_status_t stub_check_temperature_status = {0};
 
-// Stub implementation for check_temperature_status
-const char* check_temperature_status(float temperature) {
-    check_temperature_status_stub.call_count++;
-    check_temperature_status_stub.last_temperature_param = temperature;
-    return check_temperature_status_stub.return_value;
+// Mock implementation of check_temperature_status
+const char* check_temperature_status(float temperature_c) {
+    stub_check_temperature_status.call_count++;
+    stub_check_temperature_status.last_temperature_c = temperature_c; // Capture input parameter
+    return stub_check_temperature_status.return_value;
 }
 
-// --- UNITY TEST FRAMEWORK FUNCTIONS ---
+// =================================================================================================
+// UNITY FRAMEWORK SETUP AND TEARDOWN
+// =================================================================================================
 
 void setUp(void) {
-    // Reset all stub control structures before each test
-    memset(&get_temperature_celsius_stub, 0, sizeof(get_temperature_celsius_stub));
-    memset(&check_temperature_status_stub, 0, sizeof(check_temperature_status_stub));
+    // Reset all stub control structures to a known state before each test
+    memset(&stub_get_temperature_celsius, 0, sizeof(stub_get_temperature_celsius));
+    memset(&stub_check_temperature_status, 0, sizeof(stub_check_temperature_status));
 
-    // Set sensible default return values for stubs
-    get_temperature_celsius_stub.return_value = 25.0f; // Default to a nominal temperature
-    check_temperature_status_stub.return_value = "UNKNOWN"; // Default to an unknown status string
+    // Set default return values for stubs for a typical scenario
+    stub_get_temperature_celsius.return_value = 25.0f;     // Default to a nominal room temperature
+    stub_check_temperature_status.return_value = "NORMAL"; // Default to a normal status string
 }
 
 void tearDown(void) {
-    // Ensure all stub control structures are fully reset after each test
-    memset(&get_temperature_celsius_stub, 0, sizeof(get_temperature_celsius_stub));
-    memset(&check_temperature_status_stub, 0, sizeof(check_temperature_status_stub));
+    // Reset all stub control structures again after each test to ensure complete isolation
+    memset(&stub_get_temperature_celsius, 0, sizeof(stub_get_temperature_celsius));
+    memset(&stub_check_temperature_status, 0, sizeof(stub_check_temperature_status));
 }
 
-// --- TEST CASES FOR main() ---
+// =================================================================================================
+// TEST CASES FOR main()
+// Note: printf output validation is beyond the scope of typical embedded unit testing
+// and would require output redirection, which is not implemented here. We focus on function
+// call sequences, parameters, and return values.
+// =================================================================================================
 
-/**
- * @brief Test the main function with a nominal temperature scenario.
- *        Verifies correct function call sequence and return value.
- */
-void test_main_nominal_temperature_flow(void) {
+void test_main_normal_temperature(void) {
     int result;
-    const float nominal_temp = 25.0f;
-    const char* nominal_status = "NORMAL";
+    // Configure stubs for a nominal operating temperature scenario
+    stub_get_temperature_celsius.return_value = 25.0f;
+    stub_check_temperature_status.return_value = "NORMAL";
 
-    // Configure stubs for a nominal temperature scenario
-    get_temperature_celsius_stub.return_value = nominal_temp;
-    check_temperature_status_stub.return_value = nominal_status;
+    result =  // Call the main function directly
 
-    // Call the main function directly
-    result = 
-
-    // Assertions
-    // Expected: main should return 0 for successful execution
-    TEST_ASSERT_EQUAL_INT(0, result);
-    // Expected: get_temperature_celsius should be called exactly once
-    TEST_ASSERT_EQUAL_UINT32(1, get_temperature_celsius_stub.call_count);
-    // Expected: check_temperature_status should be called exactly once
-    TEST_ASSERT_EQUAL_UINT32(1, check_temperature_status_stub.call_count);
-    // Expected: The temperature passed to check_temperature_status should match the one returned by get_temperature_celsius
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, nominal_temp, check_temperature_status_stub.last_temperature_param);
-
-    // Note: Asserting printf output requires redirection (not implemented in this unit test setup).
+    // Verify main's orchestration logic
+    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius.call_count);          // Expected: get_temperature_celsius should be called exactly once
+    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status.call_count);         // Expected: check_temperature_status should be called exactly once
+    // Expected: 25.0f from get_temperature_celsius should be passed to check_temperature_status
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 25.0f, stub_check_temperature_status.last_temperature_c);
+    TEST_ASSERT_EQUAL_INT(0, result);                                           // Expected: main() should return 0 indicating success
 }
 
-/**
- * @brief Test the main function with a cold temperature scenario.
- *        Verifies correct function call sequence and parameter passing for a cold reading.
- */
-void test_main_cold_temperature_flow(void) {
+void test_main_cold_temperature_edge(void) {
     int result;
-    const float cold_temp = 0.0f; // A realistic cold temperature example
-    const char* cold_status = "COLD";
+    // Configure stubs for a cold temperature scenario, at a typical edge case (e.g., just below normal)
+    stub_get_temperature_celsius.return_value = 0.0f; // Example: temperature that would be classified as "COLD"
+    stub_check_temperature_status.return_value = "COLD"; // Expected status based on input temperature
 
-    // Configure stubs for a cold temperature scenario
-    get_temperature_celsius_stub.return_value = cold_temp;
-    check_temperature_status_stub.return_value = cold_status;
+    result =  // Call the main function
 
-    // Call the main function directly
-    result = 
-
-    // Assertions
-    // Expected: main should return 0 for successful execution
-    TEST_ASSERT_EQUAL_INT(0, result);
-    // Expected: get_temperature_celsius should be called exactly once
-    TEST_ASSERT_EQUAL_UINT32(1, get_temperature_celsius_stub.call_count);
-    // Expected: check_temperature_status should be called exactly once
-    TEST_ASSERT_EQUAL_UINT32(1, check_temperature_status_stub.call_count);
-    // Expected: The temperature passed to check_temperature_status should match the one returned by get_temperature_celsius
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, cold_temp, check_temperature_status_stub.last_temperature_param);
-
-    // Note: Asserting printf output requires redirection (not implemented in this unit test setup).
+    // Verify main's orchestration logic
+    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius.call_count);          // Expected: get_temperature_celsius should be called once
+    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status.call_count);         // Expected: check_temperature_status should be called once
+    // Expected: 0.0f from get_temperature_celsius should be passed to check_temperature_status
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 0.0f, stub_check_temperature_status.last_temperature_c);
+    TEST_ASSERT_EQUAL_INT(0, result);                                           // Expected: main() should return 0
 }
 
-/**
- * @brief Test the main function with a hot temperature scenario.
- *        Verifies correct function call sequence and parameter passing for a hot reading.
- */
-void test_main_hot_temperature_flow(void) {
+void test_main_hot_temperature_nominal(void) {
     int result;
-    const float hot_temp = 90.5f; // A realistic hot temperature example
-    const char* hot_status = "HOT";
-
     // Configure stubs for a hot temperature scenario
-    get_temperature_celsius_stub.return_value = hot_temp;
-    check_temperature_status_stub.return_value = hot_status;
+    stub_get_temperature_celsius.return_value = 90.0f; // Example: a temperature that would be classified as "HOT"
+    stub_check_temperature_status.return_value = "HOT"; // Expected status based on input temperature
 
-    // Call the main function directly
-    result = 
+    result =  // Call the main function
 
-    // Assertions
-    // Expected: main should return 0 for successful execution
-    TEST_ASSERT_EQUAL_INT(0, result);
-    // Expected: get_temperature_celsius should be called exactly once
-    TEST_ASSERT_EQUAL_UINT32(1, get_temperature_celsius_stub.call_count);
-    // Expected: check_temperature_status should be called exactly once
-    TEST_ASSERT_EQUAL_UINT32(1, check_temperature_status_stub.call_count);
-    // Expected: The temperature passed to check_temperature_status should match the one returned by get_temperature_celsius
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, hot_temp, check_temperature_status_stub.last_temperature_param);
-
-    // Note: Asserting printf output requires redirection (not implemented in this unit test setup).
+    // Verify main's orchestration logic
+    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius.call_count);          // Expected: get_temperature_celsius should be called once
+    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status.call_count);         // Expected: check_temperature_status should be called once
+    // Expected: 90.0f from get_temperature_celsius should be passed to check_temperature_status
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 90.0f, stub_check_temperature_status.last_temperature_c);
+    TEST_ASSERT_EQUAL_INT(0, result);                                           // Expected: main() should return 0
 }
 
-// --- MAIN UNITY TEST RUNNER ---
+void test_main_critical_high_temperature_edge(void) {
+    int result;
+    // Configure stubs for a critical high temperature scenario, at the maximum valid limit
+    stub_get_temperature_celsius.return_value = 125.0f; // Expected: Max valid temperature as per prompt rules
+    stub_check_temperature_status.return_value = "CRITICAL HIGH"; // Expected status for maximum temperature
+
+    result =  // Call the main function
+
+    // Verify main's orchestration logic
+    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius.call_count);          // Expected: get_temperature_celsius should be called once
+    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status.call_count);         // Expected: check_temperature_status should be called once
+    // Expected: 125.0f from get_temperature_celsius should be passed to check_temperature_status
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 125.0f, stub_check_temperature_status.last_temperature_c);
+    TEST_ASSERT_EQUAL_INT(0, result);                                           // Expected: main() should return 0
+}
+
+void test_main_critical_low_temperature_edge(void) {
+    int result;
+    // Configure stubs for a critical low temperature scenario, at the minimum valid limit
+    stub_get_temperature_celsius.return_value = 0.0f; // Expected: Min valid temperature as per prompt rules
+    stub_check_temperature_status.return_value = "CRITICAL LOW"; // Expected status for minimum temperature
+
+    result =  // Call the main function
+
+    // Verify main's orchestration logic
+    TEST_ASSERT_EQUAL_INT(1, stub_get_temperature_celsius.call_count);          // Expected: get_temperature_celsius should be called once
+    TEST_ASSERT_EQUAL_INT(1, stub_check_temperature_status.call_count);         // Expected: check_temperature_status should be called once
+    // Expected: 0.0f from get_temperature_celsius should be passed to check_temperature_status
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 0.0f, stub_check_temperature_status.last_temperature_c);
+    TEST_ASSERT_EQUAL_INT(0, result);                                           // Expected: main() should return 0
+}
+
+
+// =================================================================================================
+// MAIN FUNCTION TO RUN ALL TESTS
+// =================================================================================================
 
 
 
 int main(void) {
     UNITY_BEGIN();
 
-    RUN_TEST(test_main_nominal_temperature_flow);
-    RUN_TEST(test_main_cold_temperature_flow);
-    RUN_TEST(test_main_hot_temperature_flow);
+    RUN_TEST(test_main_normal_temperature);
+    RUN_TEST(test_main_cold_temperature_edge);
+    RUN_TEST(test_main_hot_temperature_nominal);
+    RUN_TEST(test_main_critical_high_temperature_edge);
+    RUN_TEST(test_main_critical_low_temperature_edge);
 
     return UNITY_END();
 }
