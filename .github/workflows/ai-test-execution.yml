@@ -55,6 +55,8 @@ jobs:
       id: test-execution
       run: |
         cd target-repo
+        # Clean build directory to avoid CMake cache conflicts
+        rm -rf build/
         ai-test-runner --verbose
 
     - name: Generate test summary
