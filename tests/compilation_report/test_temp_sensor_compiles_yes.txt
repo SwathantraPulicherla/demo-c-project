@@ -1,7 +1,9 @@
 Validation Report for test_temp_sensor.c
-Quality: High
+Quality: Medium
 Compiles: True
-Realistic: True
-Issues: 0
+Realistic: False
+Issues: 2
 
 Issues:
+- Temperature value 2047.0 seems unreasonably high
+- Temperature value 2047.0 seems unreasonably high
