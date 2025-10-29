@@ -82,7 +82,7 @@ void test_validate_temperature_range_midRangeValid(void) {
 }
 
 void test_validate_temperature_range_belowMinInvalid(void) {
-    // Expected: -40.1f is below the minimum valid temperature (-40.0f), so it should return false.
+    // Expected: -40.1f is less than the minimum valid temperature (-40.0f), so it should return false.
     TEST_ASSERT_FALSE(validate_temperature_range(-40.1f));
 }
 
@@ -134,7 +134,7 @@ void test_check_temperature_status_coldBelowNeg10(void) {
 }
 
 void test_check_temperature_status_coldMinValidTemp(void) {
-    // Expected: -40.0f (min valid temperature) is < -10.0f, so the status should be "COLD".
+    // Expected: -40.0f (min valid temperature) is less than -10.0f, so the status should be "COLD".
     TEST_ASSERT_EQUAL_STRING("COLD", check_temperature_status(-40.0f));
 }
 
