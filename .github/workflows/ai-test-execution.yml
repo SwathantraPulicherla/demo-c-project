@@ -72,6 +72,13 @@ jobs:
         else
           echo "summary=No test reports found" >> $GITHUB_OUTPUT
         fi
+        
+        # Check for coverage report
+        if [ -d "build/coverage_html" ]; then
+          echo "coverage_available=true" >> $GITHUB_OUTPUT
+        else
+          echo "coverage_available=false" >> $GITHUB_OUTPUT
+        fi
 
     - name: Comment test results on issue
       if: github.event_name == 'issues'
@@ -80,12 +87,17 @@ jobs:
         script: |
           const testExitCode = ${{ steps.test-execution.outcome == 'success' }};
           const testSummary = `${{ steps.test-summary.outputs.summary }}`;
+          const coverageAvailable = `${{ steps.test-summary.outputs.coverage_available }}`;
 
           let body;
           if (testExitCode) {
             body = `✅ **AI Test Execution Completed Successfully!**\n\n## Test Results\n\`\`\`\n${testSummary}\n\`\`\`\n\nAll tests passed! 🎉`;
           } else {
             body = `❌ **AI Test Execution Completed with Failures**\n\n## Test Results\n\`\`\`\n${testSummary}\n\`\`\`\n\nSome tests failed. Please check the detailed test reports in the \`tests/test_reports/\` directory.`;
+          }
+          
+          if (coverageAvailable === 'true') {
+            body += `\n\n## Coverage Report\n📊 Coverage reports are available as workflow artifacts. Download the "coverage-reports" artifact to view detailed code coverage information.`;
           }
 
           github.rest.issues.createComment({
@@ -101,4 +113,12 @@ jobs:
       with:
         name: test-reports
         path: target-repo/tests/test_reports/
+        retention-days: 30
+
+    - name: Upload coverage reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-reports
+        path: target-repo/build/coverage_html/
         retention-days: 30
