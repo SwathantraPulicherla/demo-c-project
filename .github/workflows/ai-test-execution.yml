@@ -74,7 +74,7 @@ jobs:
         fi
         
         # Check for coverage report
-        if [ -d "build/coverage_html" ]; then
+        if [ -d "tests/coverage_reports" ]; then
           echo "coverage_available=true" >> $GITHUB_OUTPUT
         else
           echo "coverage_available=false" >> $GITHUB_OUTPUT
@@ -120,5 +120,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: coverage-reports
-        path: target-repo/build/coverage_html/
+        path: target-repo/tests/coverage_reports/
         retention-days: 30
