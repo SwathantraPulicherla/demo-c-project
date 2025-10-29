@@ -1,4 +1,5 @@
 {
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "C_Cpp.intelliSenseEngine": "default",
     "C_Cpp.autocomplete": "default",
     "C_Cpp.errorSquiggles": "enabled",
@@ -24,22 +25,7 @@
     "editor.tabCompletion": "on",
     "editor.wordBasedSuggestions": "matchingDocuments",
     "editor.suggest.showKeywords": true,
-    "editor.suggest.showSnippets": true,
-    "editor.suggest.showWords": true,
-    "workbench.editor.enablePreview": true,
-    "workbench.editor.showTabs": "multiple",
-    "outline.showVariables": true,
-    "outline.showFunctions": true,
-    "outline.showConstants": true,
-    "outline.showEnums": true,
-    "outline.showEnumMembers": true,
-    "outline.showStructs": true,
-    "outline.showInterfaces": true,
-    "outline.showTypeParameters": true,
-    "outline.showModules": true,
-    "outline.showProperties": true,
-    "outline.showEvents": true,
-    "outline.showOperators": true,
-    "breadcrumbs.enabled": true,
-    "references.preferredLocation": "peek"
+    .
+    .
+    .
 }
