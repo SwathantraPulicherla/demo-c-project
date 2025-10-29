@@ -1,9 +1,0 @@
-Validation Report for test_main.c
-Quality: Low
-Compiles: False
-Realistic: False
-Issues: 2
-
-Issues:
-- Invalid includes for non-existent headers: ['string.h']
-- Floating-point values present but no TEST_ASSERT_FLOAT_WITHIN found
