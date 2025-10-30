@@ -201,29 +201,26 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-    - name: Check if coverage reports exist
-      id: check-coverage
-      run: |
-        # Check if the run-tests job created coverage reports
-        # Since we can't rely on outputs from failed jobs, check the artifact
-        if [ -f "coverage-reports/index.html" ]; then
-          echo "coverage_exists=true" >> $GITHUB_OUTPUT
-        else
-          echo "coverage_exists=false" >> $GITHUB_OUTPUT
-        fi
-
-    - name: Checkout target repository
-      if: steps.check-coverage.outputs.coverage_exists == 'true'
-      uses: actions/checkout@v4
-      with:
-        path: target-repo
-
     - name: Download coverage artifact
-      if: steps.check-coverage.outputs.coverage_exists == 'true'
+      id: download-coverage
+      continue-on-error: true
       uses: actions/download-artifact@v4
       with:
         name: coverage-reports
         path: coverage-reports/
+
+    - name: Check if coverage reports exist
+      id: check-coverage
+      run: |
+        # Check if the coverage artifact was downloaded successfully
+        if [ -f "coverage-reports/index.html" ]; then
+          echo "coverage_exists=true" >> $GITHUB_OUTPUT
+          echo "Coverage reports found and downloaded successfully"
+        else
+          echo "coverage_exists=false" >> $GITHUB_OUTPUT
+          echo "Coverage reports not found in artifact"
+          ls -la coverage-reports/ 2>/dev/null || echo "coverage-reports directory does not exist"
+        fi
 
     - name: Deploy to GitHub Pages
       if: steps.check-coverage.outputs.coverage_exists == 'true'
