@@ -70,7 +70,8 @@ jobs:
         cd target-repo
         # Clean build directory to avoid CMake cache conflicts
         rm -rf build/
-        ai-test-runner --verbose
+        echo "Running ai-test-runner with verbose output..."
+        ai-test-runner --verbose 2>&1
 
     - name: Generate test summary
       id: test-summary
