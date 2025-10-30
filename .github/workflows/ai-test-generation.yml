@@ -53,7 +53,7 @@ jobs:
         # Force regeneration by removing existing test files (they will be regenerated with quality checks)
         rm -f tests/test_*.c
         # Generate tests with same quality settings as local development
-        ai-c-testgen --api-key "$GEMINI_API_KEY" --source-dir src/ --regenerate-on-low-quality --max-regeneration-attempts 3 --quality-threshold high --verbose
+        ai-c-testgen --api-key "$GEMINI_API_KEY" --source-dir src/ --regenerate-on-low-quality --max-regeneration-attempts 3 --quality-threshold high --redact-sensitive --verbose
 
     - name: Show validation reports
       run: |
