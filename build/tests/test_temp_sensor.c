@@ -1,244 +1,272 @@
 /* test_temp_sensor.c – Auto-generated Expert Unity Tests */
 #include "unity.h"
-#include "temp_sensor.h" // For the functions being tested
+#include "temp_sensor.h" // Contains declarations for functions under test
 #include <stdbool.h>     // For bool type
-#include <stdint.h>      // For uint32_t in stub struct
-#include <string.h>      // For memset
-#include <stdlib.h>      // For rand() in source, NOT for stubbing it here
+#include <stdint.h>      // For uint32_t in stub structures
+#include <string.h>      // For memset in setUp/tearDown
 
-// Mocks/Stubs for external dependencies
-// EXTERNAL FUNCTION TO STUB: raw_to_celsius
-// Signature inferred from temp_sensor.c: float raw_to_celsius(int raw_val)
+// --- Mock/Stub for External Dependencies ---
+
+// Stub for raw_to_celsius (declared in temp_converter.h, external to temp_sensor.c)
 typedef struct {
     float return_value;
     bool was_called;
     uint32_t call_count;
-    int last_raw_val; // Capture last parameter
+    int last_raw_value;
 } stub_raw_to_celsius_t;
-
 static stub_raw_to_celsius_t stub_raw_to_celsius = {0};
 
-float raw_to_celsius(int raw_val) {
+float raw_to_celsius(int raw_value) {
     stub_raw_to_celsius.was_called = true;
     stub_raw_to_celsius.call_count++;
-    stub_raw_to_celsius.last_raw_val = raw_val;
+    stub_raw_to_celsius.last_raw_value = raw_value;
     return stub_raw_to_celsius.return_value;
 }
 
+// Stub for rand() (from stdlib.h, external dependency to read_temperature_raw)
+// This is necessary to make read_temperature_raw() deterministic for testing.
+// A real build system would link this mock before the standard library's rand().
+typedef struct {
+    int return_value;
+    bool was_called;
+    uint32_t call_count;
+} stub_rand_t;
+static stub_rand_t stub_rand = {0};
+
+// Extern declaration for rand() as we are providing a local stub.
+extern int rand(void);
+int rand(void) {
+    stub_rand.was_called = true;
+    stub_rand.call_count++;
+    return stub_rand.return_value;
+}
+
+// --- Unity Test Framework Setup and Teardown ---
+
 void setUp(void) {
     // Reset all stubs to a known state before each test
-    memset(&stub_raw_to_celsius, 0, sizeof(stub_raw_to_celsius));
+    memset(&stub_raw_to_celsius, 0, sizeof(stub_raw_to_celsius_t));
+    memset(&stub_rand, 0, sizeof(stub_rand_t));
 }
 
 void tearDown(void) {
-    // Clean up or reset all stubs after each test (mandated for complete reset in both setUp and tearDown)
-    memset(&stub_raw_to_celsius, 0, sizeof(stub_raw_to_celsius));
+    // Ensure all stubs are reset after each test
+    memset(&stub_raw_to_celsius, 0, sizeof(stub_raw_to_celsius_t));
+    memset(&stub_rand, 0, sizeof(stub_rand_t));
 }
 
-// ==== Test Cases for read_temperature_raw() ====
-// This function relies on rand() which is not stubbed as per strict rules (not on the allowed stub list).
-// Therefore, we can only test its output range and type, not a specific deterministic value.
-void test_read_temperature_raw_returns_in_range(void) {
-    int raw_temp;
-    // Run multiple times to increase confidence that the range is correct
-    // The source code uses rand() % 1024, implying a range from 0 to 1023.
-    for (int i = 0; i < 100; i++) {
-        raw_temp = read_temperature_raw();
-        // Expected: Raw value should be between 0 and 1023 (inclusive)
-        TEST_ASSERT_GREATER_OR_EQUAL_INT(0, raw_temp);
-        // Expected: Raw value should be less than 1024
-        TEST_ASSERT_LESS_OR_EQUAL_INT(1024, raw_temp);
-    }
+// --- Test Cases for read_temperature_raw() ---
+
+void test_read_temperature_raw_returns_zero_when_rand_is_zero(void) {
+    stub_rand.return_value = 0; // Configure rand() to return 0
+    int result = read_temperature_raw();
+    // Expected: read_temperature_raw() should call rand() and return its value modulo 1024 (0 % 1024 = 0)
+    TEST_ASSERT_TRUE(stub_rand.was_called);
+    TEST_ASSERT_EQUAL_INT(1, stub_rand.call_count);
+    TEST_ASSERT_EQUAL_INT(0, result);
 }
 
-// ==== Test Cases for validate_temperature_range() ====
-void test_validate_temperature_range_valid_mid_range(void) {
-    float temp = 25.0f;
-    bool result = validate_temperature_range(temp);
-    // Expected: 25.0f is within [0.0f, 125.0f] range, thus valid
-    TEST_ASSERT_TRUE(result);
+void test_read_temperature_raw_returns_max_when_rand_is_max_modulo(void) {
+    stub_rand.return_value = 1023; // Configure rand() to return 1023
+    int result = read_temperature_raw();
+    // Expected: read_temperature_raw() should call rand() and return its value modulo 1024 (1023 % 1024 = 1023)
+    TEST_ASSERT_TRUE(stub_rand.was_called);
+    TEST_ASSERT_EQUAL_INT(1, stub_rand.call_count);
+    TEST_ASSERT_EQUAL_INT(1023, result);
 }
 
-void test_validate_temperature_range_valid_min_edge(void) {
-    float temp = 0.0f;
-    bool result = validate_temperature_range(temp);
-    // Expected: 0.0f is at the minimum valid edge, thus valid
-    TEST_ASSERT_TRUE(result);
+void test_read_temperature_raw_returns_mid_range(void) {
+    stub_rand.return_value = 500; // Configure rand() to return 500
+    int result = read_temperature_raw();
+    // Expected: read_temperature_raw() should call rand() and return its value modulo 1024 (500 % 1024 = 500)
+    TEST_ASSERT_TRUE(stub_rand.was_called);
+    TEST_ASSERT_EQUAL_INT(1, stub_rand.call_count);
+    TEST_ASSERT_EQUAL_INT(500, result);
 }
 
-void test_validate_temperature_range_valid_max_edge(void) {
-    float temp = 125.0f;
-    bool result = validate_temperature_range(temp);
-    // Expected: 125.0f is at the maximum valid edge, thus valid
-    TEST_ASSERT_TRUE(result);
+void test_read_temperature_raw_returns_wrapped_value_over_max(void) {
+    stub_rand.return_value = 1024; // Configure rand() to return 1024, which should wrap to 0
+    int result = read_temperature_raw();
+    // Expected: read_temperature_raw() should call rand() and return its value modulo 1024 (1024 % 1024 = 0)
+    TEST_ASSERT_TRUE(stub_rand.was_called);
+    TEST_ASSERT_EQUAL_INT(1, stub_rand.call_count);
+    TEST_ASSERT_EQUAL_INT(0, result);
 }
 
-void test_validate_temperature_range_invalid_below_min_edge(void) {
-    float temp = 0.0f;
-    bool result = validate_temperature_range(temp);
-    // Expected: 0.0f is just below the minimum valid edge, thus invalid
-    TEST_ASSERT_FALSE(result);
+// --- Test Cases for validate_temperature_range() ---
+
+void test_validate_temperature_range_min_valid_edge(void) {
+    // Expected: 0.0f is valid, so true
+    TEST_ASSERT_TRUE(validate_temperature_range(0.0f));
 }
 
-void test_validate_temperature_range_invalid_above_max_edge(void) {
-    float temp = 125.1f;
-    bool result = validate_temperature_range(temp);
-    // Expected: 125.1f is just above the maximum valid edge, thus invalid
-    TEST_ASSERT_FALSE(result);
+void test_validate_temperature_range_min_invalid_edge(void) {
+    // Expected: 0.0f is below min range, so false
+    TEST_ASSERT_FALSE(validate_temperature_range(0.0f));
 }
 
-void test_validate_temperature_range_invalid_very_low(void) {
-    float temp = 0.0f;
-    bool result = validate_temperature_range(temp);
-    // Expected: 0.0f is significantly below the minimum valid edge, thus invalid
-    TEST_ASSERT_FALSE(result);
+void test_validate_temperature_range_max_valid_edge(void) {
+    // Expected: 125.0f is valid, so true
+    TEST_ASSERT_TRUE(validate_temperature_range(125.0f));
 }
 
-void test_validate_temperature_range_invalid_very_high(void) {
-    float temp = 200.0f;
-    bool result = validate_temperature_range(temp);
-    // Expected: 200.0f is significantly above the maximum valid edge, thus invalid
-    TEST_ASSERT_FALSE(result);
+void test_validate_temperature_range_max_invalid_edge(void) {
+    // Expected: 125.1f is above max range, so false
+    TEST_ASSERT_FALSE(validate_temperature_range(125.1f));
 }
 
-// ==== Test Cases for check_temperature_status() ====
-void test_check_temperature_status_critical_above_120(void) {
-    const char* status = check_temperature_status(120.1f);
-    // Expected: 120.1f is > 120.0f, so status is "CRITICAL"
-    TEST_ASSERT_EQUAL_STRING("CRITICAL", status);
-
-    status = check_temperature_status(150.0f);
-    // Expected: 150.0f is > 120.0f, so status is "CRITICAL"
-    TEST_ASSERT_EQUAL_STRING("CRITICAL", status);
+void test_validate_temperature_range_mid_valid(void) {
+    // Expected: 25.0f is within range, so true
+    TEST_ASSERT_TRUE(validate_temperature_range(25.0f));
 }
 
-void test_check_temperature_status_hot_above_85_edge(void) {
-    const char* status = check_temperature_status(85.1f);
-    // Expected: 85.1f is > 85.0f and not > 120.0f, so status is "HOT"
-    TEST_ASSERT_EQUAL_STRING("HOT", status);
-
-    status = check_temperature_status(100.0f);
-    // Expected: 100.0f is > 85.0f and not > 120.0f, so status is "HOT"
-    TEST_ASSERT_EQUAL_STRING("HOT", status);
+void test_validate_temperature_range_out_of_range_low(void) {
+    // Expected: 0.0f is below min range, so false
+    TEST_ASSERT_FALSE(validate_temperature_range(0.0f));
 }
 
-void test_check_temperature_status_hot_below_120_edge(void) {
-    const char* status = check_temperature_status(120.0f);
-    // Expected: 120.0f is NOT > 120.0f, but IS > 85.0f, so status is "HOT"
-    TEST_ASSERT_EQUAL_STRING("HOT", status);
+void test_validate_temperature_range_out_of_range_high(void) {
+    // Expected: 150.0f is above max range, so false
+    TEST_ASSERT_FALSE(validate_temperature_range(150.0f));
 }
 
-void test_check_temperature_status_cold_below_neg10_edge(void) {
-    const char* status = check_temperature_status(0.0f);
-    // Expected: 0.0f is < 0.0f, so status is "COLD"
-    TEST_ASSERT_EQUAL_STRING("COLD", status);
+// --- Test Cases for check_temperature_status() ---
 
-    status = check_temperature_status(0.0f);
-    // Expected: 0.0f is < 0.0f, so status is "COLD"
-    TEST_ASSERT_EQUAL_STRING("COLD", status);
+void test_check_temperature_status_critical_high_edge(void) {
+    // Expected: 120.1f is > 120.0f, so "CRITICAL"
+    TEST_ASSERT_EQUAL_STRING("CRITICAL", check_temperature_status(120.1f));
 }
 
-void test_check_temperature_status_normal_mid_range(void) {
-    const char* status = check_temperature_status(25.0f);
-    // Expected: 25.0f is not > 120, not > 85, and not < 0.0f, so status is "NORMAL"
-    TEST_ASSERT_EQUAL_STRING("NORMAL", status);
-
-    status = check_temperature_status(0.0f);
-    // Expected: 0.0f is not > 120, not > 85, and not < 0.0f, so status is "NORMAL"
-    TEST_ASSERT_EQUAL_STRING("NORMAL", status);
+void test_check_temperature_status_critical_max_valid_temp(void) {
+    // Expected: 125.0f is > 120.0f, so "CRITICAL"
+    TEST_ASSERT_EQUAL_STRING("CRITICAL", check_temperature_status(125.0f));
 }
 
-void test_check_temperature_status_normal_cold_edge(void) {
-    const char* status = check_temperature_status(0.0f);
-    // Expected: 0.0f is NOT < 0.0f, so it falls into "NORMAL"
-    TEST_ASSERT_EQUAL_STRING("NORMAL", status);
+void test_check_temperature_status_hot_edge_below_critical(void) {
+    // Expected: 120.0f is not > 120.0f, but is > 85.0f, so "HOT"
+    TEST_ASSERT_EQUAL_STRING("HOT", check_temperature_status(120.0f));
 }
 
-void test_check_temperature_status_normal_hot_edge(void) {
-    const char* status = check_temperature_status(85.0f);
-    // Expected: 85.0f is NOT > 85.0f, so it falls into "NORMAL"
-    TEST_ASSERT_EQUAL_STRING("NORMAL", status);
+void test_check_temperature_status_hot_mid_range(void) {
+    // Expected: 100.0f is not > 120.0f, but is > 85.0f, so "HOT"
+    TEST_ASSERT_EQUAL_STRING("HOT", check_temperature_status(100.0f));
 }
 
-// ==== Test Cases for get_temperature_celsius() ====
-// This function calls read_temperature_raw() which is non-deterministic (uses rand()).
-// We can only test that raw_to_celsius is called with a value in the expected range (00.0f)
-// and that the final return value matches the stubbed raw_to_celsius result.
-void test_get_temperature_celsius_calls_dependencies_and_returns_value(void) {
-    // Configure the stub to return a specific Celsius value
-    float expected_celsius = 25.5f;
-    stub_raw_to_celsius.return_value = expected_celsius;
-
-    // Call the function under test
-    float result = get_temperature_celsius();
-
-    // Expected: raw_to_celsius should have been called
-    TEST_ASSERT_TRUE(stub_raw_to_celsius.was_called);
-    // Expected: raw_to_celsius should have been called exactly once
-    TEST_ASSERT_EQUAL_UINT32(1, stub_raw_to_celsius.call_count);
-    // Expected: The raw value passed to raw_to_celsius should be within 00.0f
-    TEST_ASSERT_GREATER_OR_EQUAL_INT(0, stub_raw_to_celsius.last_raw_val);
-    TEST_ASSERT_LESS_OR_EQUAL_INT(1024, stub_raw_to_celsius.last_raw_val);
-    // Expected: The returned Celsius value should match the stubbed return value
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_celsius, result);
+void test_check_temperature_status_hot_min_edge(void) {
+    // Expected: 85.1f is not > 120.0f, but is > 85.0f, so "HOT"
+    TEST_ASSERT_EQUAL_STRING("HOT", check_temperature_status(85.1f));
 }
 
-void test_get_temperature_celsius_low_raw_conversion(void) {
-    // Simulate a low raw value leading to a low Celsius by setting the stub's return
-    float expected_celsius = 0.0f;
-    stub_raw_to_celsius.return_value = expected_celsius;
+void test_check_temperature_status_cold_edge(void) {
+    // Expected: 0.0f is < 0.0f, so "COLD"
+    TEST_ASSERT_EQUAL_STRING("COLD", check_temperature_status(0.0f));
+}
+
+void test_check_temperature_status_cold_mid_range(void) {
+    // Expected: 0.0f is < 0.0f, so "COLD"
+    TEST_ASSERT_EQUAL_STRING("COLD", check_temperature_status(0.0f));
+}
+
+void test_check_temperature_status_cold_min_valid_temp(void) {
+    // Expected: 0.0f is < 0.0f, so "COLD"
+    TEST_ASSERT_EQUAL_STRING("COLD", check_temperature_status(0.0f));
+}
+
+void test_check_temperature_status_normal_edge_above_cold(void) {
+    // Expected: 0.0f is not < 0.0f, not > 85.0f, not > 120.0f, so "NORMAL"
+    TEST_ASSERT_EQUAL_STRING("NORMAL", check_temperature_status(0.0f));
+}
+
+void test_check_temperature_status_normal_edge_below_hot(void) {
+    // Expected: 85.0f is not > 85.0f, not > 120.0f, so "NORMAL"
+    TEST_ASSERT_EQUAL_STRING("NORMAL", check_temperature_status(85.0f));
+}
+
+void test_check_temperature_status_normal_mid_range_zero(void) {
+    // Expected: 0.0f falls into the "NORMAL" range
+    TEST_ASSERT_EQUAL_STRING("NORMAL", check_temperature_status(0.0f));
+}
+
+void test_check_temperature_status_normal_mid_range_positive(void) {
+    // Expected: 25.0f falls into the "NORMAL" range
+    TEST_ASSERT_EQUAL_STRING("NORMAL", check_temperature_status(25.0f));
+}
+
+// --- Test Cases for get_temperature_celsius() ---
+
+void test_get_temperature_celsius_normal_raw_conversion(void) {
+    stub_rand.return_value = 500;             // raw = 500
+    stub_raw_to_celsius.return_value = 25.0f; // raw_to_celsius(500) returns 25.0f
 
     float result = get_temperature_celsius();
 
-    // Expected: raw_to_celsius should have been called
+    // Expected: read_temperature_raw() (via stub_rand) was called
+    TEST_ASSERT_TRUE(stub_rand.was_called);
+    TEST_ASSERT_EQUAL_INT(1, stub_rand.call_count);
+    // Expected: raw_to_celsius() was called with the value from read_temperature_raw()
     TEST_ASSERT_TRUE(stub_raw_to_celsius.was_called);
-    // Expected: The raw value passed to raw_to_celsius should be within 00.0f
-    TEST_ASSERT_GREATER_OR_EQUAL_INT(0, stub_raw_to_celsius.last_raw_val);
-    TEST_ASSERT_LESS_OR_EQUAL_INT(1024, stub_raw_to_celsius.last_raw_val);
-    // Expected: The returned Celsius value should match the stubbed return value
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_celsius, result);
+    TEST_ASSERT_EQUAL_INT(1, stub_raw_to_celsius.call_count);
+    TEST_ASSERT_EQUAL_INT(500, stub_raw_to_celsius.last_raw_value);
+    // Expected: get_temperature_celsius() returns the value from raw_to_celsius()
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 25.0f, result);
 }
 
-void test_get_temperature_celsius_high_raw_conversion(void) {
-    // Simulate a high raw value leading to a high Celsius by setting the stub's return
-    float expected_celsius = 100.0f;
-    stub_raw_to_celsius.return_value = expected_celsius;
+void test_get_temperature_celsius_min_raw_conversion(void) {
+    stub_rand.return_value = 0;               // raw = 0
+    stub_raw_to_celsius.return_value = 0.0f; // raw_to_celsius(0) returns 0.0f
 
     float result = get_temperature_celsius();
 
-    // Expected: raw_to_celsius should have been called
-    TEST_ASSERT_TRUE(stub_raw_to_celsius.was_called);
-    // Expected: The raw value passed to raw_to_celsius should be within 00.0f
-    TEST_ASSERT_GREATER_OR_EQUAL_INT(0, stub_raw_to_celsius.last_raw_val);
-    TEST_ASSERT_LESS_OR_EQUAL_INT(1024, stub_raw_to_celsius.last_raw_val);
-    // Expected: The returned Celsius value should match the stubbed return value
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_celsius, result);
+    // Expected: raw_to_celsius() was called with 0
+    TEST_ASSERT_EQUAL_INT(0, stub_raw_to_celsius.last_raw_value);
+    // Expected: get_temperature_celsius() returns 0.0f
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 0.0f, result);
 }
 
-// ==== Main function for running tests ====
+void test_get_temperature_celsius_max_raw_conversion(void) {
+    stub_rand.return_value = 1023;            // raw = 1023
+    stub_raw_to_celsius.return_value = 125.0f; // raw_to_celsius(1023) returns 125.0f
+
+    float result = get_temperature_celsius();
+
+    // Expected: raw_to_celsius() was called with 1023
+    TEST_ASSERT_EQUAL_INT(1023, stub_raw_to_celsius.last_raw_value);
+    // Expected: get_temperature_celsius() returns 125.0f
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 125.0f, result);
+}
+
+// --- Main Test Runner ---
 
 
 int main(void) {
     UNITY_BEGIN();
 
-    RUN_TEST(test_read_temperature_raw_returns_in_range);
-    RUN_TEST(test_validate_temperature_range_valid_mid_range);
-    RUN_TEST(test_validate_temperature_range_valid_min_edge);
-    RUN_TEST(test_validate_temperature_range_valid_max_edge);
-    RUN_TEST(test_validate_temperature_range_invalid_below_min_edge);
-    RUN_TEST(test_validate_temperature_range_invalid_above_max_edge);
-    RUN_TEST(test_validate_temperature_range_invalid_very_low);
-    RUN_TEST(test_validate_temperature_range_invalid_very_high);
-    RUN_TEST(test_check_temperature_status_critical_above_120);
-    RUN_TEST(test_check_temperature_status_hot_above_85_edge);
-    RUN_TEST(test_check_temperature_status_hot_below_120_edge);
-    RUN_TEST(test_check_temperature_status_cold_below_neg10_edge);
-    RUN_TEST(test_check_temperature_status_normal_mid_range);
-    RUN_TEST(test_check_temperature_status_normal_cold_edge);
-    RUN_TEST(test_check_temperature_status_normal_hot_edge);
-    RUN_TEST(test_get_temperature_celsius_calls_dependencies_and_returns_value);
-    RUN_TEST(test_get_temperature_celsius_low_raw_conversion);
-    RUN_TEST(test_get_temperature_celsius_high_raw_conversion);
+    RUN_TEST(test_read_temperature_raw_returns_zero_when_rand_is_zero);
+    RUN_TEST(test_read_temperature_raw_returns_max_when_rand_is_max_modulo);
+    RUN_TEST(test_read_temperature_raw_returns_mid_range);
+    RUN_TEST(test_read_temperature_raw_returns_wrapped_value_over_max);
+    RUN_TEST(test_validate_temperature_range_min_valid_edge);
+    RUN_TEST(test_validate_temperature_range_min_invalid_edge);
+    RUN_TEST(test_validate_temperature_range_max_valid_edge);
+    RUN_TEST(test_validate_temperature_range_max_invalid_edge);
+    RUN_TEST(test_validate_temperature_range_mid_valid);
+    RUN_TEST(test_validate_temperature_range_out_of_range_low);
+    RUN_TEST(test_validate_temperature_range_out_of_range_high);
+    RUN_TEST(test_check_temperature_status_critical_high_edge);
+    RUN_TEST(test_check_temperature_status_critical_max_valid_temp);
+    RUN_TEST(test_check_temperature_status_hot_edge_below_critical);
+    RUN_TEST(test_check_temperature_status_hot_mid_range);
+    RUN_TEST(test_check_temperature_status_hot_min_edge);
+    RUN_TEST(test_check_temperature_status_cold_edge);
+    RUN_TEST(test_check_temperature_status_cold_mid_range);
+    RUN_TEST(test_check_temperature_status_cold_min_valid_temp);
+    RUN_TEST(test_check_temperature_status_normal_edge_above_cold);
+    RUN_TEST(test_check_temperature_status_normal_edge_below_hot);
+    RUN_TEST(test_check_temperature_status_normal_mid_range_zero);
+    RUN_TEST(test_check_temperature_status_normal_mid_range_positive);
+    RUN_TEST(test_get_temperature_celsius_normal_raw_conversion);
+    RUN_TEST(test_get_temperature_celsius_min_raw_conversion);
+    RUN_TEST(test_get_temperature_celsius_max_raw_conversion);
 
     return UNITY_END();
 }
