@@ -77,6 +77,18 @@ jobs:
       id: test-summary
       run: |
         cd target-repo
+        echo "=== DEBUGGING INFO ==="
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
+        ls -la
+        echo "Tests directory:"
+        ls -la tests/ 2>/dev/null || echo "tests/ directory not found"
+        echo "Coverage reports directory:"
+        ls -la tests/coverage_reports/ 2>/dev/null || echo "tests/coverage_reports/ directory not found"
+        echo "Test reports directory:"
+        ls -la tests/test_reports/ 2>/dev/null || echo "tests/test_reports/ directory not found"
+        echo "=== END DEBUGGING ==="
+        
         # Extract test results from the output
         if [ -d "tests/test_reports" ]; then
           TEST_SUMMARY=$(find tests/test_reports -name "*.txt" -exec cat {} \; | grep -E "(PASSED|FAILED|Individual Tests)" | tail -10)
@@ -90,8 +102,10 @@ jobs:
         # Check for coverage report
         if [ -d "tests/coverage_reports" ]; then
           echo "coverage_available=true" >> $GITHUB_OUTPUT
+          echo "Coverage reports found - setting coverage_available=true"
         else
           echo "coverage_available=false" >> $GITHUB_OUTPUT
+          echo "Coverage reports NOT found - setting coverage_available=false"
         fi
 
     - name: Commit test and coverage reports to repository
