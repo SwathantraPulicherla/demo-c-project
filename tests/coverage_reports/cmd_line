@@ -1,0 +1,1 @@
+genhtml coverage_source.info --output-directory /home/runner/work/demo-c-project/demo-c-project/target-repo/tests/coverage_reports

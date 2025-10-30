@@ -1,0 +1,47 @@
+============================================================
+TEST REPORT: test_temp_sensor
+============================================================
+
+EXECUTION SUMMARY
+--------------------
+Test Executable: test_temp_sensor
+Exit Code: 5
+Overall Status: FAILED
+Individual Tests Run: 26
+Individual Tests Passed: 21
+Individual Tests Failed: 5
+
+DETAILED OUTPUT
+--------------------
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:244:test_read_temperature_raw_returns_zero_when_rand_is_zero:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:245:test_read_temperature_raw_returns_max_when_rand_is_max_modulo:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:246:test_read_temperature_raw_returns_mid_range:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:247:test_read_temperature_raw_returns_wrapped_value_over_max:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:248:test_validate_temperature_range_min_valid_edge:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:105:test_validate_temperature_range_min_invalid_edge:FAIL.  Expected FALSE Was TRUE
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:250:test_validate_temperature_range_max_valid_edge:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:251:test_validate_temperature_range_max_invalid_edge:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:252:test_validate_temperature_range_mid_valid:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:125:test_validate_temperature_range_out_of_range_low:FAIL.  Expected FALSE Was TRUE
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:254:test_validate_temperature_range_out_of_range_high:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:255:test_check_temperature_status_critical_high_edge:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:256:test_check_temperature_status_critical_max_valid_temp:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:257:test_check_temperature_status_hot_edge_below_critical:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:258:test_check_temperature_status_hot_mid_range:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:259:test_check_temperature_status_hot_min_edge:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:162:test_check_temperature_status_cold_edge:FAIL: Expected 'COLD' Was 'NORMAL'
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:167:test_check_temperature_status_cold_mid_range:FAIL: Expected 'COLD' Was 'NORMAL'
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:172:test_check_temperature_status_cold_min_valid_temp:FAIL: Expected 'COLD' Was 'NORMAL'
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:263:test_check_temperature_status_normal_edge_above_cold:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:264:test_check_temperature_status_normal_edge_below_hot:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:265:test_check_temperature_status_normal_mid_range_zero:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:266:test_check_temperature_status_normal_mid_range_positive:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:267:test_get_temperature_celsius_normal_raw_conversion:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:268:test_get_temperature_celsius_min_raw_conversion:PASS
+/home/runner/work/demo-c-project/demo-c-project/target-repo/build/tests/test_temp_sensor.c:269:test_get_temperature_celsius_max_raw_conversion:PASS
+
+-----------------------
+26 Tests 5 Failures 0 Ignored 
+FAIL
+
+============================================================
