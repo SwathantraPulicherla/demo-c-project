@@ -5,9 +5,6 @@ build/
 *.gcno
 *.gcda
 
-# Test reports
-tests/test_reports/
-
 # Unity framework
 unity/
 

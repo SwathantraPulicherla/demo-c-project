@@ -1,0 +1,35 @@
+============================================================
+TEST REPORT: test_temp_converter.exe
+============================================================
+
+EXECUTION SUMMARY
+--------------------
+Test Executable: test_temp_converter.exe
+Exit Code: 3
+Overall Status: FAILED
+Individual Tests Run: 14
+Individual Tests Passed: 11
+Individual Tests Failed: 3
+
+DETAILED OUTPUT
+--------------------
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:30:test_raw_to_celsius_min_raw:FAIL: Expected 0 Was -40
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:214:test_raw_to_celsius_max_raw:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:215:test_raw_to_celsius_mid_range_raw:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:69:test_raw_to_celsius_room_temp_raw:FAIL: Expected 25 Was 25.32259
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:217:test_celsius_to_fahrenheit_freezing_point:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:218:test_celsius_to_fahrenheit_boiling_point:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:108:test_celsius_to_fahrenheit_negative_temp:FAIL: Expected 0 Was 32
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:220:test_celsius_to_fahrenheit_room_temp:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:221:test_is_temperature_rising_true_positive:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:222:test_is_temperature_rising_false_negative_insufficient_rise:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:223:test_is_temperature_rising_false_negative_exact_threshold:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:224:test_is_temperature_rising_false_negative_falling_temp:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:225:test_is_temperature_rising_zero_difference_zero_threshold:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:226:test_is_temperature_rising_true_positive_tiny_rise:PASS
+
+-----------------------
+14 Tests 3 Failures 0 Ignored 
+FAIL
+
+============================================================
