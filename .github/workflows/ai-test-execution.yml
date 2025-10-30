@@ -193,7 +193,7 @@ jobs:
 
   # Deploy coverage reports to GitHub Pages
   deploy-coverage:
-    if: always() && needs.run-tests.outputs.coverage_available == 'true'
+    if: always()
     needs: run-tests
     runs-on: ubuntu-latest
     environment:
@@ -201,58 +201,31 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+    - name: Check if coverage reports exist
+      id: check-coverage
+      run: |
+        # Check if the run-tests job created coverage reports
+        # Since we can't rely on outputs from failed jobs, check the artifact
+        if [ -f "coverage-reports/index.html" ]; then
+          echo "coverage_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "coverage_exists=false" >> $GITHUB_OUTPUT
+        fi
+
     - name: Checkout target repository
+      if: steps.check-coverage.outputs.coverage_exists == 'true'
       uses: actions/checkout@v4
       with:
         path: target-repo
 
-    - name: Checkout AI tools
-      uses: actions/checkout@v4
+    - name: Download coverage artifact
+      if: steps.check-coverage.outputs.coverage_exists == 'true'
+      uses: actions/download-artifact@v4
       with:
-        repository: SwathantraPulicherla/ai-test-runner
-        path: ai-tools
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Checkout AI test generator
-      uses: actions/checkout@v4
-      with:
-        repository: SwathantraPulicherla/ai-c-test-generator
-        path: ai-test-generator
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-
-    - name: Upgrade pip and setuptools
-      run: |
-        python -m pip install --upgrade pip setuptools wheel
-
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y cmake build-essential lcov
-
-    - name: Install AI test runner
-      run: |
-        cd ai-tools
-        pip install -e .
-        # Set PYTHONPATH to include ai-test-generator for imports
-        echo "PYTHONPATH=$GITHUB_WORKSPACE/ai-test-generator:$PYTHONPATH" >> $GITHUB_ENV
-
-    - name: Generate coverage reports
-      run: |
-        cd target-repo
-        # Clean build directory to avoid CMake cache conflicts
-        rm -rf build/
-        ai-test-runner --verbose
-
-    - name: Upload coverage report artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: target-repo/tests/coverage_reports/  # must match the folder with your HTML report
+        name: coverage-reports
+        path: coverage-reports/
 
     - name: Deploy to GitHub Pages
+      if: steps.check-coverage.outputs.coverage_exists == 'true'
       id: deployment
       uses: actions/deploy-pages@v4
