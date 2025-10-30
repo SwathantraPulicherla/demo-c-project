@@ -29,7 +29,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.11'
 
     - name: Upgrade pip and setuptools
       run: |
@@ -38,7 +38,7 @@ jobs:
     - name: Install AI test generator
       run: |
         cd ai-tools
-        pip install --upgrade --force-reinstall google-generativeai>=0.8.0 python-dotenv
+        pip install --upgrade --force-reinstall google-generativeai==0.8.5 python-dotenv
         pip install --pre -e .
         python3 -c "import google.generativeai as genai; print('Installed version:', genai.__version__); print('Has GenerativeModel:', hasattr(genai, 'GenerativeModel'))"
 
@@ -47,7 +47,19 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: |
         cd target-repo
-        ai-c-testgen --api-key "$GEMINI_API_KEY" --source src/
+        # Clean up old test artifacts before generation
+        rm -rf tests/compilation_report/
+        rm -rf tests/test_reports/
+        # Force regeneration by removing existing test files (they will be regenerated with quality checks)
+        rm -f tests/test_*.c
+        # Generate tests with same quality settings as local development
+        ai-c-testgen --api-key "$GEMINI_API_KEY" --source-dir src/ --regenerate-on-low-quality --max-regeneration-attempts 3 --quality-threshold high --verbose
+
+    - name: Show validation reports
+      run: |
+        cd target-repo
+        echo "=== VALIDATION REPORTS ==="
+        find tests/compilation_report/ -name "*.txt" -exec echo "=== {} ===" \; -exec cat {} \;
 
     - name: Check for changes
       id: verify-changed-files
