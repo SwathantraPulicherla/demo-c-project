@@ -77,8 +77,8 @@ jobs:
       run: |
         cd target-repo
         # Extract test results from the output
-        if [ -d "tests/test_reports" ]; then
-          TEST_SUMMARY=$(find tests/test_reports -name "*.txt" -exec cat {} \; | grep -E "(PASSED|FAILED|Individual Tests)" | tail -10)
+        if [ -d "tests/tests_reports" ]; then
+          TEST_SUMMARY=$(find tests/tests_reports -name "*.txt" -exec cat {} \; | grep -E "(PASSED|FAILED|Individual Tests)" | tail -10)
           echo "summary<<EOF" >> $GITHUB_OUTPUT
           echo "$TEST_SUMMARY" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
