@@ -186,12 +186,17 @@ jobs:
         path: target-repo/tests/test_reports/
         retention-days: 30
 
+    - name: Debug coverage availability
+      if: always()
+      run: |
+        echo "Coverage available: ${{ steps.test-summary.outputs.coverage_available }}"
+        ls -la target-repo/tests/coverage_reports/ || echo "Coverage directory not found"
+
     - name: Upload coverage reports for Pages
       if: always() && steps.test-summary.outputs.coverage_available == 'true'
       uses: actions/upload-pages-artifact@v3
       with:
         path: target-repo/tests/coverage_reports/
-        retention-days: 30
 
   # Deploy coverage reports to GitHub Pages
   deploy-coverage:
