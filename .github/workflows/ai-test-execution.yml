@@ -12,7 +12,7 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
@@ -153,6 +153,37 @@ jobs:
       if: always()
       run: |
         ls -la target-repo/tests/coverage_reports/ || echo "Coverage directory not found"
+
+    - name: Clean up existing github-pages artifacts
+      if: always() && steps.test-summary.outputs.coverage_available == 'true'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: context.runId
+          });
+          
+          const pagesArtifacts = artifacts.data.artifacts.filter(artifact => 
+            artifact.name === 'github-pages'
+          );
+          
+          // Delete all but the most recent github-pages artifact
+          if (pagesArtifacts.length > 1) {
+            const sortedArtifacts = pagesArtifacts.sort((a, b) => 
+              new Date(b.created_at) - new Date(a.created_at)
+            );
+            
+            for (let i = 1; i < sortedArtifacts.length; i++) {
+              await github.rest.actions.deleteArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: sortedArtifacts[i].id
+              });
+              console.log(`Deleted duplicate artifact: ${sortedArtifacts[i].name}`);
+            }
+          }
 
     - name: Upload coverage reports for Pages
       if: always() && steps.test-summary.outputs.coverage_available == 'true'
