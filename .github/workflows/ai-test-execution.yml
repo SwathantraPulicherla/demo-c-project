@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       coverage_available: ${{ steps.test-summary.outputs.coverage_available }}
+      run_id: ${{ github.run_id }}
+      run_attempt: ${{ github.run_attempt }}
 
     steps:
     - name: Checkout target repository
@@ -154,42 +156,13 @@ jobs:
       run: |
         ls -la target-repo/tests/coverage_reports/ || echo "Coverage directory not found"
 
-    - name: Clean up existing github-pages artifacts
-      if: always() && steps.test-summary.outputs.coverage_available == 'true'
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            run_id: context.runId
-          });
-          
-          const pagesArtifacts = artifacts.data.artifacts.filter(artifact => 
-            artifact.name === 'github-pages'
-          );
-          
-          // Delete all but the most recent github-pages artifact
-          if (pagesArtifacts.length > 1) {
-            const sortedArtifacts = pagesArtifacts.sort((a, b) => 
-              new Date(b.created_at) - new Date(a.created_at)
-            );
-            
-            for (let i = 1; i < sortedArtifacts.length; i++) {
-              await github.rest.actions.deleteArtifact({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                artifact_id: sortedArtifacts[i].id
-              });
-              console.log(`Deleted duplicate artifact: ${sortedArtifacts[i].name}`);
-            }
-          }
-
     - name: Upload coverage reports for Pages
       if: always() && steps.test-summary.outputs.coverage_available == 'true'
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
+        name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
         path: target-repo/tests/coverage_reports/
+        retention-days: 1
 
   # Deploy coverage reports to GitHub Pages
   deploy-coverage:
@@ -204,3 +177,5 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+      with:
+        artifact_name: github-pages-${{ needs.run-tests.outputs.run_id }}-${{ needs.run-tests.outputs.run_attempt }}
