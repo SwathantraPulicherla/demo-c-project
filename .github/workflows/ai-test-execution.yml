@@ -16,13 +16,43 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  run-tests:
+  cleanup-artifacts:
     if: contains(github.event.issue.labels.*.name, 'ai-test-run') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    outputs:
-      coverage_available: ${{ steps.test-summary.outputs.coverage_available }}
-
     steps:
+      - name: Delete all old github-pages artifacts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runs = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              status: 'in_progress',
+            });
+            
+            for (const run of runs.data.workflow_runs) {
+              const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: run.id,
+              });
+              
+              const pagesArtifacts = artifacts.data.artifacts.filter(
+                (artifact) => artifact.name === 'github-pages'
+              );
+
+              for (const artifact of pagesArtifacts) {
+                console.log(`Deleting artifact: ${artifact.name} (${artifact.id}) from run ${run.id}`);
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id,
+                });
+              }
+            }
+
+  run-tests:
+    needs: cleanup-artifacts
     - name: Checkout target repository
       uses: actions/checkout@v4
       with:
@@ -179,6 +209,28 @@ jobs:
 
     - name: Upload coverage reports for Pages
       if: always() && steps.test-summary.outputs.coverage_available == 'true'
+    needs: run-tests
+    runs-on: ubuntu-latest
+    if: needs.run-tests.outputs.coverage_available == 'true'
+    steps:
+      - name: Upload coverage reports for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target-repo/tests/coverage_reports/
+
+  # Deploy coverage reports to GitHub Pages
+  deploy-coverage:
+    if: always() && needs.upload-pages-artifact.result == 'success'
+    needs: upload-pages-artifact
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
       uses: actions/upload-pages-artifact@v3
       with:
         path: target-repo/tests/coverage_reports/
