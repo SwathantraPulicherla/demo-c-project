@@ -1,0 +1,38 @@
+============================================================
+TEST REPORT: test_temp_converter.exe
+============================================================
+
+EXECUTION SUMMARY
+--------------------
+Test Executable: test_temp_converter.exe
+Exit Code: 5
+Overall Status: FAILED
+Individual Tests Run: 17
+Individual Tests Passed: 12
+Individual Tests Failed: 5
+
+DETAILED OUTPUT
+--------------------
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:31:test_raw_to_celsius_min_raw_produces_min_celsius:FAIL: Expected 0 Was -40
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:191:test_raw_to_celsius_max_raw_produces_max_celsius:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:192:test_raw_to_celsius_mid_raw_produces_mid_celsius:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:57:test_raw_to_celsius_low_raw_negative_celsius:FAIL: Expected 0 Was -23.87097
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:194:test_raw_to_celsius_high_raw_positive_celsius:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:195:test_celsius_to_fahrenheit_freezing_point:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:196:test_celsius_to_fahrenheit_boiling_point:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:96:test_celsius_to_fahrenheit_negative_temp:FAIL: Expected 14 Was 32
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:198:test_celsius_to_fahrenheit_typical_room_temp:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:114:test_celsius_to_fahrenheit_negative_40_is_same:FAIL: Expected 0 Was 32
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:200:test_is_temperature_rising_above_threshold:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:201:test_is_temperature_rising_below_threshold:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:202:test_is_temperature_rising_exactly_at_threshold:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:155:test_is_temperature_rising_negative_temps_rising:FAIL: Expected 0x00000001 Was 0x00000000
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:204:test_is_temperature_rising_negative_temps_falling:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:205:test_is_temperature_rising_zero_threshold_rising:PASS
+C:/Users/SwathantraPulicherla/OneDrive - requisimus Holding GmbH/Desktop/AI_tools_project/workspaces/demo/demo-c-project/build/tests/test_temp_converter.c:206:test_is_temperature_rising_zero_threshold_stable:PASS
+
+-----------------------
+17 Tests 5 Failures 0 Ignored 
+FAIL
+
+============================================================
