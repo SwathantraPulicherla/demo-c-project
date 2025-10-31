@@ -70,7 +70,6 @@ jobs:
         cd target-repo
         # Clean build directory to avoid CMake cache conflicts
         rm -rf build/
-        echo "Running ai-test-runner with verbose output..."
         ai-test-runner --verbose 2>&1
 
     - name: Generate test summary
@@ -78,46 +77,29 @@ jobs:
       if: always()
       run: |
         cd target-repo
-        echo "=== DEBUGGING INFO ==="
-        echo "Current directory: $(pwd)"
-        echo "Directory contents:"
-        ls -la
-        echo "Tests directory:"
-        ls -la tests/ 2>/dev/null || echo "tests/ directory not found"
-        echo "Coverage reports directory:"
-        ls -la tests/coverage_reports/ 2>/dev/null || echo "tests/coverage_reports/ directory not found"
-        echo "Test reports directory:"
-        ls -la tests/test_reports/ 2>/dev/null || echo "tests/test_reports/ directory not found"
-        echo "=== END DEBUGGING ==="
         
         # Extract test results from the output
         if [ -d "tests/test_reports" ]; then
-          echo "Found test_reports directory"
           ls -la tests/test_reports/
           
           # Look for test summary lines
           TEST_SUMMARY=$(find tests/test_reports -name "*.txt" -exec cat {} \; | grep -E "(Overall Status|Individual Tests|PASSED|FAILED)" | head -10)
           
           if [ -z "$TEST_SUMMARY" ]; then
-            echo "No test summary found in reports, checking raw content..."
             TEST_SUMMARY=$(find tests/test_reports -name "*.txt" -exec head -20 {} \; | head -10)
           fi
           
-          echo "Extracted summary: $TEST_SUMMARY"
           echo "summary<<EOF" >> $GITHUB_OUTPUT
           echo "$TEST_SUMMARY" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         else
-          echo "No test_reports directory found"
           echo "summary=No test reports found" >> $GITHUB_OUTPUT
         fi
         
         # Check for coverage report
         if [ -d "tests/coverage_reports" ] && [ -f "tests/coverage_reports/index.html" ]; then
-          echo "Coverage reports found with index.html"
           echo "coverage_available=true" >> $GITHUB_OUTPUT
         else
-          echo "Coverage reports NOT found or missing index.html"
           ls -la tests/coverage_reports/ 2>/dev/null || echo "coverage_reports directory not found"
           echo "coverage_available=false" >> $GITHUB_OUTPUT
         fi
@@ -170,7 +152,6 @@ jobs:
     - name: Debug coverage availability
       if: always()
       run: |
-        echo "Coverage available: ${{ steps.test-summary.outputs.coverage_available }}"
         ls -la target-repo/tests/coverage_reports/ || echo "Coverage directory not found"
 
     - name: Upload coverage reports for Pages
