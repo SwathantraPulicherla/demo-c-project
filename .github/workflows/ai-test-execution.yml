@@ -75,6 +75,7 @@ jobs:
 
     - name: Generate test summary
       id: test-summary
+      if: always()
       run: |
         cd target-repo
         echo "=== DEBUGGING INFO ==="
@@ -180,7 +181,7 @@ jobs:
 
   # Deploy coverage reports to GitHub Pages
   deploy-coverage:
-    if: needs.run-tests.outputs.coverage_available == 'true'
+    if: always() && needs.run-tests.outputs.coverage_available == 'true'
     needs: run-tests
     runs-on: ubuntu-latest
     environment:
