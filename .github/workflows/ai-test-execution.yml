@@ -12,8 +12,8 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages-${{ github.workflow }}-${{ github.ref }}"
-  cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   run-tests:
@@ -21,8 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       coverage_available: ${{ steps.test-summary.outputs.coverage_available }}
-      run_id: ${{ github.run_id }}
-      run_attempt: ${{ github.run_attempt }}
 
     steps:
     - name: Checkout target repository
@@ -82,8 +80,6 @@ jobs:
         
         # Extract test results from the output
         if [ -d "tests/test_reports" ]; then
-          ls -la tests/test_reports/
-          
           # Look for test summary lines
           TEST_SUMMARY=$(find tests/test_reports -name "*.txt" -exec cat {} \; | grep -E "(Overall Status|Individual Tests|PASSED|FAILED)" | head -10)
           
@@ -102,7 +98,6 @@ jobs:
         if [ -d "tests/coverage_reports" ] && [ -f "tests/coverage_reports/index.html" ]; then
           echo "coverage_available=true" >> $GITHUB_OUTPUT
         else
-          ls -la tests/coverage_reports/ 2>/dev/null || echo "coverage_reports directory not found"
           echo "coverage_available=false" >> $GITHUB_OUTPUT
         fi
 
@@ -151,18 +146,11 @@ jobs:
         path: target-repo/tests/coverage_reports/
         retention-days: 30
 
-    - name: Debug coverage availability
-      if: always()
-      run: |
-        ls -la target-repo/tests/coverage_reports/ || echo "Coverage directory not found"
-
     - name: Upload coverage reports for Pages
       if: always() && steps.test-summary.outputs.coverage_available == 'true'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-pages-artifact@v3
       with:
-        name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
         path: target-repo/tests/coverage_reports/
-        retention-days: 1
 
   # Deploy coverage reports to GitHub Pages
   deploy-coverage:
@@ -177,5 +165,3 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
-      with:
-        artifact_name: github-pages-${{ needs.run-tests.outputs.run_id }}-${{ needs.run-tests.outputs.run_attempt }}
