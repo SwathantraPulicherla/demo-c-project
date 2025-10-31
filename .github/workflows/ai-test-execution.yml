@@ -146,6 +146,37 @@ jobs:
         path: target-repo/tests/coverage_reports/
         retention-days: 30
 
+    - name: Delete old github-pages artifacts
+      if: always() && steps.test-summary.outputs.coverage_available == 'true'
+      uses: actions/github-script@v7
+      continue-on-error: true
+      with:
+        script: |
+          const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: context.runId
+          });
+          
+          const pagesArtifacts = artifacts.data.artifacts.filter(artifact => 
+            artifact.name === 'github-pages'
+          );
+          
+          console.log(`Found ${pagesArtifacts.length} github-pages artifacts`);
+          
+          for (const artifact of pagesArtifacts) {
+            try {
+              await github.rest.actions.deleteArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: artifact.id
+              });
+              console.log(`Deleted artifact: ${artifact.name} (${artifact.id})`);
+            } catch (error) {
+              console.log(`Failed to delete artifact ${artifact.id}: ${error.message}`);
+            }
+          }
+
     - name: Upload coverage reports for Pages
       if: always() && steps.test-summary.outputs.coverage_available == 'true'
       uses: actions/upload-pages-artifact@v3
